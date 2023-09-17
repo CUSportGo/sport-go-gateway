@@ -1,19 +1,27 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { Client, ClientGrpc } from '@nestjs/microservices';
-import { AuthServiceClientImpl } from '../proto/auth';
+import {
+  HttpException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  OnModuleInit,
+} from '@nestjs/common';
+import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
+import { ClientGrpc, RpcException } from '@nestjs/microservices';
+import { catchError, throwError } from 'rxjs';
+import { LoginRequestDto } from './auth.dto';
+import { AuthServiceClient } from './auth.pb';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
-  private authClient: AuthServiceClientImpl;
+  private authClient: AuthServiceClient;
 
   constructor(@Inject('AUTH_PACKAGE') private client: ClientGrpc) {}
 
   onModuleInit() {
-    this.authClient =
-      this.client.getService<AuthServiceClientImpl>('AuthService');
+    this.authClient = this.client.getService<AuthServiceClient>('AuthService');
   }
 
-  login(req: any) {
-    return this.authClient.Login(req);
+  login(req: LoginRequestDto) {
+    return this.authClient.login(req);
   }
 }

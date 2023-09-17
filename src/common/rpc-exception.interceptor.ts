@@ -18,6 +18,8 @@ export class RpcExceptionInterceptor implements GrpcToHttpInterceptor {
   ): Observable<any> | Promise<Observable<any>> {
     return next.handle().pipe(
       catchError((err) => {
+        console.log(err);
+
         let error: any;
         const statusCode = err.code;
         const message = err.message;
