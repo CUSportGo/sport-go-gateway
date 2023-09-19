@@ -2,10 +2,10 @@ import { status } from '@grpc/grpc-js';
 import {
   ExecutionContext,
   CallHandler,
-  BadRequestException,
   ForbiddenException,
   InternalServerErrorException,
   ServiceUnavailableException,
+  HttpException,
 } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { GrpcToHttpInterceptor } from 'nestjs-grpc-exceptions';
@@ -18,8 +18,10 @@ export class RpcExceptionInterceptor implements GrpcToHttpInterceptor {
   ): Observable<any> | Promise<Observable<any>> {
     return next.handle().pipe(
       catchError((err) => {
-        console.log(err);
-
+        console.log('Interceptor', err);
+        if (err instanceof HttpException) {
+          return throwError(() => err);
+        }
         let error: any;
         const statusCode = err.code;
         const message = err.message;
@@ -37,7 +39,6 @@ export class RpcExceptionInterceptor implements GrpcToHttpInterceptor {
             break;
           }
         }
-
         return throwError(() => error);
       }),
     );

@@ -1,16 +1,18 @@
 import {
-  HttpException,
   Inject,
   Injectable,
-  InternalServerErrorException,
   OnModuleInit,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
-import { ClientGrpc, RpcException } from '@nestjs/microservices';
-import { catchError, throwError } from 'rxjs';
+import { ClientGrpc } from '@nestjs/microservices';
+import { Response } from 'express';
+import { map } from 'rxjs';
 import { LoginRequestDto } from './auth.dto';
-import { AuthServiceClient } from './auth.pb';
+import {
+  AuthServiceClient,
+  ValidateGoogleRequest,
+  ValidateGoogleResponse,
+} from './auth.pb';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -26,14 +28,17 @@ export class AuthService implements OnModuleInit {
     return this.authClient.login(req);
   }
 
-  googleLogin(req: any) {
-    if (!req.user) {
+  googleLogin(request: ValidateGoogleRequest, response: Response) {
+    if (!request) {
       throw new UnauthorizedException('Unauthorized user');
     }
 
-    return {
-      message: 'User information from google',
-      user: req.user,
-    };
+    return this.authClient.validateGoogle(request).pipe(
+      map((credential: ValidateGoogleResponse) => {
+        response.cookie('accessToken', credential.credential.accessToken);
+        response.cookie('refreshToken', credential.credential.accessToken);
+        return response.status(301).redirect(process.env.BASEURL);
+      }),
+    );
   }
 }
