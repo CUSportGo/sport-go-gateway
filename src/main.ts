@@ -5,8 +5,9 @@ import { RpcExceptionInterceptor } from './common/rpc-exception.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
   app.connectMicroservice<MicroserviceOptions>({});
   app.useGlobalInterceptors(new RpcExceptionInterceptor());
-  await app.listen(3000);
+  await app.listen(3002);
 }
 bootstrap();
