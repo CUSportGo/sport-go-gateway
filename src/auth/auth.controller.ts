@@ -1,5 +1,5 @@
-import { Body, Controller, Post, Req, UseInterceptors } from '@nestjs/common';
-import { RpcExceptionInterceptor } from '../common/rpc-exception.interceptor';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { LoginRequestDto } from './auth.dto';
 import { AuthService } from './auth.service';
 
@@ -10,5 +10,15 @@ export class AuthController {
   @Post('login')
   login(@Body() req: LoginRequestDto) {
     return this.authService.login(req);
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth(@Req() req) {}
+
+  @Get('google/redirect')
+  @UseGuards(AuthGuard('google'))
+  googleAuthRediect(@Req() req) {
+    return this.authService.googleLogin(req);
   }
 }

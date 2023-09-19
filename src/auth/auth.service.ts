@@ -4,6 +4,7 @@ import {
   Injectable,
   InternalServerErrorException,
   OnModuleInit,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 import { ClientGrpc, RpcException } from '@nestjs/microservices';
@@ -23,5 +24,16 @@ export class AuthService implements OnModuleInit {
 
   login(req: LoginRequestDto) {
     return this.authClient.login(req);
+  }
+
+  googleLogin(req: any) {
+    if (!req.user) {
+      throw new UnauthorizedException('Unauthorized user');
+    }
+
+    return {
+      message: 'User information from google',
+      user: req.user,
+    };
   }
 }
