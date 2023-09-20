@@ -8,7 +8,7 @@ import {
 import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 import { ClientGrpc, RpcException } from '@nestjs/microservices';
 import { catchError, throwError } from 'rxjs';
-import { LoginRequestDto } from './auth.dto';
+import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
 import { AuthServiceClient } from './auth.pb';
 
 @Injectable()
@@ -23,5 +23,8 @@ export class AuthService implements OnModuleInit {
 
   login(req: LoginRequestDto) {
     return this.authClient.login(req);
+  }
+  register(req: RegisterRequestDto) {
+    return this.authClient.register(req);
   }
 }
