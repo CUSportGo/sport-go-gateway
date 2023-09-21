@@ -39,17 +39,23 @@ export class AuthService implements OnModuleInit {
     );
   }
 
-  googleLogin(request: ValidateGoogleRequest, response: Response) {
+  async googleLogin(request: ValidateGoogleRequest, response: Response) {
     if (!request) {
       throw new UnauthorizedException('Unauthorized user');
     }
 
-    return this.authClient.validateGoogle(request).pipe(
-      map((credential: ValidateGoogleResponse) => {
-        response.cookie('accessToken', credential.credential.accessToken);
-        response.cookie('refreshToken', credential.credential.accessToken);
-        return response.status(301).redirect(process.env.BASEURL);
-      }),
+    const credential = await firstValueFrom(
+      this.authClient.validateGoogle(request).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
     );
+
+    response.cookie('accessToken', credential.credential.accessToken);
+    response.cookie('refreshToken', credential.credential.refreshToken);
+    response.status(301).redirect('http://localhost:3000');
   }
 }

@@ -8,9 +8,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { LoginRequestDto } from './auth.dto';
-import { ValidateGoogleRequest } from './auth.pb';
+import { GoogleUser, ValidateGoogleRequest } from './auth.pb';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -28,9 +28,9 @@ export class AuthController {
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
-  googleAuthRediect(@Req() request: any, @Res() response: Response) {
+  googleAuthRediect(@Req() request: Request, @Res() response: Response) {
     const validateRequest: ValidateGoogleRequest = {
-      user: request.user,
+      user: request.user as GoogleUser,
     };
     return this.authService.googleLogin(validateRequest, response);
   }
