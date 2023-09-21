@@ -14,7 +14,7 @@ import { AuthService } from './auth.service';
         options: {
           package: 'auth',
           protoPath: join(__dirname, '../proto/auth.proto'),
-          url: 'localhost:3001',
+          url: 'localhost:8081',
         },
       },
     ]),

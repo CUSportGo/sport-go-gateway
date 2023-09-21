@@ -8,6 +8,6 @@ async function bootstrap() {
   app.enableCors();
   app.connectMicroservice<MicroserviceOptions>({});
   app.useGlobalInterceptors(new RpcExceptionInterceptor());
-  await app.listen(3002);
+  await app.listen(8080);
 }
 bootstrap();
