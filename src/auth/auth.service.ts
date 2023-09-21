@@ -1,9 +1,20 @@
-import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  OnModuleInit,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { catchError, firstValueFrom } from 'rxjs';
+import { Response } from 'express';
+import { catchError, firstValueFrom, map } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
 import { LoginRequestDto } from './auth.dto';
-import { AuthServiceClient } from './auth.pb';
+import {
+  AuthServiceClient,
+  ValidateGoogleRequest,
+  ValidateGoogleResponse,
+} from './auth.pb';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -26,5 +37,25 @@ export class AuthService implements OnModuleInit {
         }),
       ),
     );
+  }
+
+  async googleLogin(request: ValidateGoogleRequest, response: Response) {
+    if (!request) {
+      throw new UnauthorizedException('Unauthorized user');
+    }
+
+    const credential = await firstValueFrom(
+      this.authClient.validateGoogle(request).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
+
+    response.cookie('accessToken', credential.credential.accessToken);
+    response.cookie('refreshToken', credential.credential.refreshToken);
+    response.status(301).redirect('http://localhost:3000');
   }
 }
