@@ -11,5 +11,7 @@ export class AdminController {
   }
 
   @Patch('/unban/:userId')
-  unbanUser(@Param('userId') userId: string) {}
+  unbanUser(@Param('userId') userId: string) {
+    return this.adminService.unbanUser(userId);
+  }
 }
