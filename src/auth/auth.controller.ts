@@ -1,5 +1,4 @@
-import { Body, Controller, Post, Req, UseInterceptors } from '@nestjs/common';
-import { RpcExceptionInterceptor } from '../common/rpc-exception.interceptor';
+import { Body, Controller, Post } from '@nestjs/common';
 import { LoginRequestDto } from './auth.dto';
 import { AuthService } from './auth.service';
 
