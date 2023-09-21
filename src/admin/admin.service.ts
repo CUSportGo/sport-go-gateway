@@ -9,7 +9,7 @@ import { ClientTCP } from '@nestjs/microservices';
 import { AxiosError, AxiosResponse } from 'axios';
 import { request } from 'http';
 import { catchError, firstValueFrom, Observable } from 'rxjs';
-import { axiosException } from '../common/axios-exception';
+import { exceptionHandler } from '../common/exception-handler';
 import { User } from '../model/user.dto';
 
 @Injectable()
@@ -30,7 +30,9 @@ export class AdminService {
             throw new ServiceUnavailableException('Service Unavailable');
           }
           this.logger.error(error.response.data);
-          const exception = axiosException.getException(error.response.data);
+          const exception = exceptionHandler.getExceptionFromAxios(
+            error.response.data,
+          );
           throw exception;
         }),
       ),
