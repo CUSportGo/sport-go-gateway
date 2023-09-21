@@ -40,4 +40,26 @@ export class AdminService {
 
     return response.data;
   }
+
+  async unbanUser(userId: string) {
+    const requestURL =
+      this.baseURL + '/user/unban/{userId}'.replace('{userId}', userId);
+
+    const response: AxiosResponse<User, any> = await firstValueFrom(
+      this.httpService.patch<User>(requestURL).pipe(
+        catchError((error: AxiosError) => {
+          if (!error.response) {
+            throw new ServiceUnavailableException('Service Unavailable');
+          }
+          this.logger.error(error.response.data);
+          const exception = exceptionHandler.getExceptionFromAxios(
+            error.response.data,
+          );
+          throw exception;
+        }),
+      ),
+    );
+
+    return response.data;
+  }
 }
