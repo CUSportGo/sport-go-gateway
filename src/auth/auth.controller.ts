@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
-import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
+import { LoginRequestDto } from './auth.dto';
 import { GoogleUser, ValidateGoogleRequest } from './auth.pb';
 import { AuthService } from './auth.service';
 
@@ -19,11 +19,6 @@ export class AuthController {
 
   @Post('login')
   login(@Body() req: LoginRequestDto) {
-    return this.authService.login(req);
-  }
-
-  @Post('register')
-  register(@Body() req: RegisterRequestDto) {
     return this.authService.login(req);
   }
 

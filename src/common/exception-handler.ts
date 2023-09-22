@@ -35,9 +35,6 @@ const getExceptionFromGrpc = (error: any) => {
   const statusCode = error.code;
   const message = error.message;
   switch (statusCode) {
-    case status.ALREADY_EXISTS: {
-      throw new BadRequestException(message);
-    }
     case status.INVALID_ARGUMENT: {
       throw new BadRequestException(message);
     }
