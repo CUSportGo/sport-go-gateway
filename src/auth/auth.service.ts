@@ -5,11 +5,12 @@ import {
   OnModuleInit,
   UnauthorizedException,
 } from '@nestjs/common';
+
 import { ClientGrpc } from '@nestjs/microservices';
 import { Response } from 'express';
 import { catchError, firstValueFrom, map } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
-import { LoginRequestDto } from './auth.dto';
+import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
 import {
   AuthServiceClient,
   ValidateGoogleRequest,
@@ -57,5 +58,16 @@ export class AuthService implements OnModuleInit {
     response.cookie('accessToken', credential.credential.accessToken);
     response.cookie('refreshToken', credential.credential.refreshToken);
     response.status(301).redirect('http://localhost:3000');
+  }
+  async register(req: RegisterRequestDto) {
+    return await firstValueFrom(
+      this.authClient.register(req).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
   }
 }
