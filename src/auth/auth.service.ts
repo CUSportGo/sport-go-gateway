@@ -59,7 +59,15 @@ export class AuthService implements OnModuleInit {
     response.cookie('refreshToken', credential.credential.refreshToken);
     response.status(301).redirect('http://localhost:3000');
   }
-  register(req: RegisterRequestDto) {
-    return this.authClient.register(req);
+  async register(req: RegisterRequestDto) {
+    return await firstValueFrom(
+      this.authClient.register(req).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
   }
 }
