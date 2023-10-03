@@ -15,7 +15,7 @@ import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @Post('login')
   login(@Body() req: LoginRequestDto) {
@@ -27,9 +27,9 @@ export class AuthController {
     return this.authService.login(req);
   }
 
-  @Get('google')
-  @UseGuards(AuthGuard('google'))
-  async googleAuth() {}
+  // @Get('google')
+  // @UseGuards(AuthGuard('google'))
+  // async googleAuth() { }
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))

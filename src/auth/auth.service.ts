@@ -22,7 +22,7 @@ export class AuthService implements OnModuleInit {
   private authClient: AuthServiceClient;
   private readonly logger = new Logger(AuthService.name);
 
-  constructor(@Inject('AUTH_PACKAGE') private client: ClientGrpc) {}
+  constructor(@Inject('AUTH_PACKAGE') private client: ClientGrpc) { }
 
   onModuleInit() {
     this.authClient = this.client.getService<AuthServiceClient>('AuthService');
