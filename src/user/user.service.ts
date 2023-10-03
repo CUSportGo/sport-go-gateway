@@ -15,6 +15,8 @@ export class UserService {
         const requestURL = this.baseURL + "/user";
         const response: AxiosResponse<User[], any> = await firstValueFrom(this.httpService.get(requestURL).pipe(
             catchError((error: AxiosError) => {
+
+                console.log(error)
                 if (!error.response) {
                     throw new ServiceUnavailableException('Service Unavailable');
                 }
