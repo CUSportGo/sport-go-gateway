@@ -10,7 +10,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
-import { GoogleUser, ValidateGoogleRequest } from './auth.pb';
+import { GoogleUser, LogoutRequest, ValidateGoogleRequest } from './auth.pb';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -24,12 +24,14 @@ export class AuthController {
 
   @Post('register')
   register(@Body() req: RegisterRequestDto) {
-    return this.authService.login(req);
+    return this.authService.register(req);
   }
+
 
   // @Get('google')
   // @UseGuards(AuthGuard('google'))
   // async googleAuth() { }
+
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
@@ -38,5 +40,10 @@ export class AuthController {
       user: request.user as GoogleUser,
     };
     return this.authService.googleLogin(validateRequest, response);
+  }
+
+  @Post('logout')
+  logout(@Body() req: LogoutRequest) {
+    return this.authService.logout(req);
   }
 }

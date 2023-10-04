@@ -13,6 +13,7 @@ import { exceptionHandler } from '../common/exception-handler';
 import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
 import {
   AuthServiceClient,
+  LogoutRequest,
   ValidateGoogleRequest,
   ValidateGoogleResponse,
 } from './auth.pb';
@@ -69,5 +70,17 @@ export class AuthService implements OnModuleInit {
         }),
       ),
     );
+  }
+
+  async logout(req: LogoutRequest) {
+    return await firstValueFrom(
+      this.authClient.logout(req).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        })
+      )
+    )
   }
 }
