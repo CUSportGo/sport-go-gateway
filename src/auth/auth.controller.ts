@@ -27,9 +27,11 @@ export class AuthController {
     return this.authService.register(req);
   }
 
-  @Get('google')
-  @UseGuards(AuthGuard('google'))
-  async googleAuth() { }
+
+  // @Get('google')
+  // @UseGuards(AuthGuard('google'))
+  // async googleAuth() { }
+
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
