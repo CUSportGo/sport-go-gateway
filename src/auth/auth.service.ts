@@ -14,6 +14,7 @@ import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
 import {
   AuthServiceClient,
   LogoutRequest,
+  ResetPasswordRequest,
   ValidateGoogleRequest,
   ValidateGoogleResponse,
 } from './auth.pb';
@@ -75,6 +76,19 @@ export class AuthService implements OnModuleInit {
   async logout(req: LogoutRequest) {
     return await firstValueFrom(
       this.authClient.logout(req).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        })
+      )
+    )
+  }
+
+
+  async resetPassword(req: ResetPasswordRequest) {
+    return await firstValueFrom(
+      this.authClient.resetPassword(req).pipe(
         catchError((error) => {
           this.logger.error(error);
           const exception = exceptionHandler.getExceptionFromGrpc(error);

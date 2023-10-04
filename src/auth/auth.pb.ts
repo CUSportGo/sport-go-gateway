@@ -68,6 +68,15 @@ export interface LogoutResponse {
   isDone: boolean;
 }
 
+export interface ResetPasswordRequest {
+  email: string;
+  newPassword: string;
+}
+
+export interface ResetPasswordResponse {
+  isDone: boolean;
+}
+
 export const AUTH_PACKAGE_NAME = "auth";
 
 export interface AuthServiceClient {
@@ -80,6 +89,8 @@ export interface AuthServiceClient {
   validateGoogle(request: ValidateGoogleRequest): Observable<ValidateGoogleResponse>;
 
   logout(request: LogoutRequest): Observable<LogoutResponse>;
+
+  resetPassword(request: ResetPasswordRequest): Observable<ResetPasswordResponse>;
 }
 
 export interface AuthServiceController {
@@ -96,11 +107,15 @@ export interface AuthServiceController {
   ): Promise<ValidateGoogleResponse> | Observable<ValidateGoogleResponse> | ValidateGoogleResponse;
 
   logout(request: LogoutRequest): Promise<LogoutResponse> | Observable<LogoutResponse> | LogoutResponse;
+
+  resetPassword(
+    request: ResetPasswordRequest,
+  ): Promise<ResetPasswordResponse> | Observable<ResetPasswordResponse> | ResetPasswordResponse;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["login", "refreshToken", "register", "validateGoogle", "logout"];
+    const grpcMethods: string[] = ["login", "refreshToken", "register", "validateGoogle", "logout", "resetPassword"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);
