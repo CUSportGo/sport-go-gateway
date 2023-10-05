@@ -5,7 +5,6 @@ import { Profile, Strategy } from 'passport-facebook';
 @Injectable()
 export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
   constructor() {
-    console.log(process.env);
     super({
       clientID: process.env.FACEBOOK_OAUTH_APP_ID,
       clientSecret: process.env.FACEBOOK_OAUTH_APP_SECRET,
@@ -21,7 +20,6 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     profile: Profile,
     done: (err: any, user: any, info?: any) => void,
   ): Promise<any> {
-    console.log(profile);
     const { id, name, emails } = profile;
     const user = {
       id: id,
