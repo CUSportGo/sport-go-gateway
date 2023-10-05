@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
+  Put,
   Req,
   Res,
   UseGuards,
@@ -24,7 +26,7 @@ export class AuthController {
 
   @Post('register')
   register(@Body() req: RegisterRequestDto) {
-    return this.authService.login(req);
+    return this.authService.register(req);
   }
 
   // @Get('google')
@@ -40,8 +42,13 @@ export class AuthController {
     return this.authService.googleLogin(validateRequest, response);
   }
 
-  @Post('resetPassword')
-  resetPassword(@Body() request: ResetPasswordRequest) {
+  @Put('resetPassword/:accessToken')
+  resetPassword(@Body('password') password: string, @Param('accessToken') accessToken: string) {
+
+    const request: ResetPasswordRequest = {
+      accessToken: accessToken,
+      password: password,
+    }
     return this.authService.resetPassword(request);
   }
 

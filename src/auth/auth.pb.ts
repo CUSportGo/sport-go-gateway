@@ -69,8 +69,8 @@ export interface LogoutResponse {
 }
 
 export interface ResetPasswordRequest {
-  email: string;
-  newPassword: string;
+  accessToken: string;
+  password: string;
 }
 
 export interface ResetPasswordResponse {

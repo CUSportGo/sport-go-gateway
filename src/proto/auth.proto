@@ -9,6 +9,7 @@ service AuthService {
   rpc ValidateGoogle(ValidateGoogleRequest) returns (ValidateGoogleResponse) {}
   rpc Logout(LogoutRequest) returns (LogoutResponse) {}
   rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
+
 }
 
 message RegisterRequest {
@@ -76,8 +77,8 @@ message LogoutResponse {
 }
 
 message ResetPasswordRequest {
-  string email = 1;
-  string new_password = 2;
+  string access_token = 1;
+  string password = 2;
 }
 
 message ResetPasswordResponse {
