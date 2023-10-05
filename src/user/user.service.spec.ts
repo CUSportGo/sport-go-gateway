@@ -6,13 +6,16 @@ describe('UserService', () => {
   let service: UserService;
   const mockHttpService = {
     get: jest.fn(),
-  }
+  };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UserService, {
-        provide: HttpService,
-        useValue: mockHttpService,
-      }],
+      providers: [
+        UserService,
+        {
+          provide: HttpService,
+          useValue: mockHttpService,
+        },
+      ],
     }).compile();
 
     service = module.get<UserService>(UserService);

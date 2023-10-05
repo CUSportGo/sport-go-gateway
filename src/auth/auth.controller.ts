@@ -2,14 +2,13 @@ import {
   Body,
   Controller,
   Get,
-  HttpStatus,
   Post,
   Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Request, response, Response } from 'express';
+import { Request, Response } from 'express';
 import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
 import { LogoutRequest, OAuthUser, ValidateOAuthRequest } from './auth.pb';
 import { AuthService } from './auth.service';
@@ -30,7 +29,7 @@ export class AuthController {
 
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  async googleAuth() {}
+  googleAuth() {}
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
@@ -44,7 +43,7 @@ export class AuthController {
 
   @Get('facebook')
   @UseGuards(AuthGuard('facebook'))
-  async facebookLogin() {}
+  facebookLogin() {}
 
   @Get('facebook/redirect')
   @UseGuards(AuthGuard('facebook'))
