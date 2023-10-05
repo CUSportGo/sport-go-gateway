@@ -11,7 +11,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Request, response, Response } from 'express';
 import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
-import { GoogleUser, LogoutRequest, ValidateGoogleRequest } from './auth.pb';
+import { LogoutRequest, OAuthUser, ValidateOAuthRequest } from './auth.pb';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -35,10 +35,11 @@ export class AuthController {
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
   googleAuthRediect(@Req() request: Request, @Res() response: Response) {
-    const validateRequest: ValidateGoogleRequest = {
-      user: request.user as GoogleUser,
+    const validateRequest: ValidateOAuthRequest = {
+      user: request.user as OAuthUser,
+      type: 'google',
     };
-    return this.authService.googleLogin(validateRequest, response);
+    return this.authService.OAuthLogin(validateRequest, response);
   }
 
   @Get('facebook')
@@ -48,10 +49,11 @@ export class AuthController {
   @Get('facebook/redirect')
   @UseGuards(AuthGuard('facebook'))
   facebookAuthRedirect(@Req() request: Request, @Res() response: Response) {
-    return {
-      statusCode: HttpStatus.OK,
-      data: request.user,
+    const validateRequest: ValidateOAuthRequest = {
+      user: request.user as OAuthUser,
+      type: 'facebook',
     };
+    return this.authService.OAuthLogin(validateRequest, response);
   }
 
   @Post('logout')
