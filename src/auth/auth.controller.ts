@@ -10,12 +10,12 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
-import { LogoutRequest, OAuthUser, ValidateOAuthRequest } from './auth.pb';
+import { ForgotPasswordRequest, LogoutRequest, OAuthUser, ValidateOAuthRequest } from './auth.pb';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @Post('login')
   login(@Body() req: LoginRequestDto) {
@@ -29,7 +29,7 @@ export class AuthController {
 
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  googleAuth() {}
+  googleAuth() { }
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
@@ -43,7 +43,7 @@ export class AuthController {
 
   @Get('facebook')
   @UseGuards(AuthGuard('facebook'))
-  facebookLogin() {}
+  facebookLogin() { }
 
   @Get('facebook/redirect')
   @UseGuards(AuthGuard('facebook'))
@@ -58,5 +58,10 @@ export class AuthController {
   @Post('logout')
   logout(@Body() req: LogoutRequest) {
     return this.authService.logout(req);
+  }
+
+  @Post('forgotPassword')
+  forgotPassword(@Body() req: ForgotPasswordRequest) {
+    return this.authService.forgotPassword(req);
   }
 }
