@@ -27,7 +27,7 @@ export interface Credential {
   refreshTokenExpiresIn: number;
 }
 
-export interface GoogleUser {
+export interface OAuthUser {
   id: string;
   firstName: string;
   lastName: string;
@@ -52,12 +52,9 @@ export interface RefreshTokenResponse {
   credential: Credential | undefined;
 }
 
-export interface ValidateGoogleRequest {
-  user: GoogleUser | undefined;
-}
-
-export interface ValidateGoogleResponse {
-  credential: Credential | undefined;
+export interface ValidateOAuthRequest {
+  user: OAuthUser | undefined;
+  type: string;
 }
 
 export interface LogoutRequest {
@@ -77,7 +74,7 @@ export interface AuthServiceClient {
 
   register(request: RegisterRequest): Observable<RegisterResponse>;
 
-  validateGoogle(request: ValidateGoogleRequest): Observable<ValidateGoogleResponse>;
+  validateOAuth(request: ValidateOAuthRequest): Observable<LoginResponse>;
 
   logout(request: LogoutRequest): Observable<LogoutResponse>;
 }
@@ -91,16 +88,14 @@ export interface AuthServiceController {
 
   register(request: RegisterRequest): Promise<RegisterResponse> | Observable<RegisterResponse> | RegisterResponse;
 
-  validateGoogle(
-    request: ValidateGoogleRequest,
-  ): Promise<ValidateGoogleResponse> | Observable<ValidateGoogleResponse> | ValidateGoogleResponse;
+  validateOAuth(request: ValidateOAuthRequest): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
 
   logout(request: LogoutRequest): Promise<LogoutResponse> | Observable<LogoutResponse> | LogoutResponse;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["login", "refreshToken", "register", "validateGoogle", "logout"];
+    const grpcMethods: string[] = ["login", "refreshToken", "register", "validateOAuth", "logout"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);

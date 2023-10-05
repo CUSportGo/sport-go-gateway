@@ -1,14 +1,11 @@
 import { HttpService } from '@nestjs/axios';
 import {
-  Inject,
   Injectable,
   Logger,
   ServiceUnavailableException,
 } from '@nestjs/common';
-import { ClientTCP } from '@nestjs/microservices';
 import { AxiosError, AxiosResponse } from 'axios';
-import { request } from 'http';
-import { catchError, firstValueFrom, Observable } from 'rxjs';
+import { catchError, firstValueFrom } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
 import { User } from '../model/user.dto';
 

@@ -8,14 +8,17 @@ describe('AuthService', () => {
   const mockClientGrpc = {
     getService: jest.fn(),
     getClientByServiceName: jest.fn(),
-  }
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService, {
-        provide: 'AUTH_PACKAGE',
-        useValue: mockClientGrpc
-      }],
+      providers: [
+        AuthService,
+        {
+          provide: 'AUTH_PACKAGE',
+          useValue: mockClientGrpc,
+        },
+      ],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
