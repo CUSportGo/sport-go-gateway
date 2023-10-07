@@ -18,7 +18,7 @@ import { SportareaService } from './sportarea.service';
 @Controller('sportarea')
 export class SportareaController {
   constructor(private sportareaService: SportareaService) {}
-  @Post('create')
+  @Post()
   create(@Body() req: CreateSportareaRequest) {
     return this.sportareaService.create(req);
   }
