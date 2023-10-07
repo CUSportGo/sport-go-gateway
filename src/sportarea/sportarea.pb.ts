@@ -30,21 +30,53 @@ export interface CreateSportareaResponse {
   price: number;
 }
 
+export interface SearchSportAreaRequest {
+  sportType: string;
+  location: string;
+  userLatitude: number;
+  userLongitude: number;
+  maxDistance: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+}
+
+export interface SearchSportAreaResponse {
+  data: SportArea[];
+}
+
+export interface SportArea {
+  id: string;
+  name: string;
+  imageURL: string;
+  sportType: string;
+  location: string;
+  description: string;
+  distance: number;
+  price: string;
+}
+
 export const SPORTAREA_PACKAGE_NAME = "sportarea";
 
 export interface SportareaServiceClient {
   create(request: CreateSportareaRequest): Observable<CreateSportareaResponse>;
+
+  searchSportArea(request: SearchSportAreaRequest): Observable<SearchSportAreaResponse>;
 }
 
 export interface SportareaServiceController {
   create(
     request: CreateSportareaRequest,
   ): Promise<CreateSportareaResponse> | Observable<CreateSportareaResponse> | CreateSportareaResponse;
+
+  searchSportArea(
+    request: SearchSportAreaRequest,
+  ): Promise<SearchSportAreaResponse> | Observable<SearchSportAreaResponse> | SearchSportAreaResponse;
 }
 
 export function SportareaServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["create"];
+    const grpcMethods: string[] = ["create", "searchSportArea"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("SportareaService", method)(constructor.prototype[method], method, descriptor);
