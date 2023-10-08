@@ -42,8 +42,8 @@ export class AuthController {
     return this.authService.googleLogin(validateRequest, response);
   }
 
-  @Put('resetPassword/:accessToken')
-  resetPassword(@Body('password') password: string, @Param('accessToken') accessToken: string) {
+  @Put('resetPassword')
+  resetPassword(@Body('password') password: string, @Body('accessToken') accessToken: string) {
 
     const request: ResetPasswordRequest = {
       accessToken: accessToken,
