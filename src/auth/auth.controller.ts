@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
+  Put,
   Req,
   Res,
   UseGuards,
@@ -10,7 +12,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
-import { ForgotPasswordRequest, LogoutRequest, OAuthUser, ValidateOAuthRequest } from './auth.pb';
+import { ForgotPasswordRequest, LogoutRequest, OAuthUser, ResetPasswordRequest, ValidateOAuthRequest } from './auth.pb';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -27,9 +29,9 @@ export class AuthController {
     return this.authService.register(req);
   }
 
-  @Get('google')
-  @UseGuards(AuthGuard('google'))
-  googleAuth() { }
+  // @Get('google')
+  // @UseGuards(AuthGuard('google'))
+  // async googleAuth() { }
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
@@ -55,6 +57,18 @@ export class AuthController {
     return this.authService.OAuthLogin(validateRequest, response);
   }
 
+  @Put('resetPassword')
+  resetPassword(@Body('password') password: string, @Body('accessToken') accessToken: string) {
+
+    const request: ResetPasswordRequest = {
+      accessToken: accessToken,
+      password: password,
+    }
+    return this.authService.resetPassword(request);
+  }
+
+
+
   @Post('logout')
   logout(@Body() req: LogoutRequest) {
     return this.authService.logout(req);
@@ -64,4 +78,6 @@ export class AuthController {
   forgotPassword(@Body() req: ForgotPasswordRequest) {
     return this.authService.forgotPassword(req);
   }
+
+
 }

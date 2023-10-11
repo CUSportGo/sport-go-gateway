@@ -15,6 +15,7 @@ import {
   AuthServiceClient,
   ForgotPasswordRequest,
   LogoutRequest,
+  ResetPasswordRequest,
   ValidateOAuthRequest,
 } from './auth.pb';
 
@@ -96,4 +97,20 @@ export class AuthService implements OnModuleInit {
       ),
     );
   }
+
+
+  async resetPassword(req: ResetPasswordRequest) {
+    return await firstValueFrom(
+      this.authClient.resetPassword(req).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
+  }
+
+
+
 }

@@ -9,6 +9,8 @@ service AuthService {
   rpc ValidateOAuth(ValidateOAuthRequest) returns (LoginResponse) {}
   rpc Logout(LogoutRequest) returns (LogoutResponse) {}
   rpc ForgotPassword(ForgotPasswordRequest) returns (ForgotPasswordResponse) {}
+  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
+
 }
 
 message RegisterRequest {
@@ -78,4 +80,13 @@ message ForgotPasswordRequest {
 
 message ForgotPasswordResponse {
   string resetPasswordUrl = 1;
+}
+
+message ResetPasswordRequest {
+  string access_token = 1;
+  string password = 2;
+}
+
+message ResetPasswordResponse {
+  bool is_done = 1;
 }

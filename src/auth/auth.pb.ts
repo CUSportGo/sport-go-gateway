@@ -73,6 +73,15 @@ export interface ForgotPasswordResponse {
   resetPasswordUrl: string;
 }
 
+export interface ResetPasswordRequest {
+  accessToken: string;
+  password: string;
+}
+
+export interface ResetPasswordResponse {
+  isDone: boolean;
+}
+
 export const AUTH_PACKAGE_NAME = "auth";
 
 export interface AuthServiceClient {
@@ -87,6 +96,8 @@ export interface AuthServiceClient {
   logout(request: LogoutRequest): Observable<LogoutResponse>;
 
   forgotPassword(request: ForgotPasswordRequest): Observable<ForgotPasswordResponse>;
+
+  resetPassword(request: ResetPasswordRequest): Observable<ResetPasswordResponse>;
 }
 
 export interface AuthServiceController {
@@ -105,11 +116,23 @@ export interface AuthServiceController {
   forgotPassword(
     request: ForgotPasswordRequest,
   ): Promise<ForgotPasswordResponse> | Observable<ForgotPasswordResponse> | ForgotPasswordResponse;
+
+  resetPassword(
+    request: ResetPasswordRequest,
+  ): Promise<ResetPasswordResponse> | Observable<ResetPasswordResponse> | ResetPasswordResponse;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["login", "refreshToken", "register", "validateOAuth", "logout", "forgotPassword"];
+    const grpcMethods: string[] = [
+      "login",
+      "refreshToken",
+      "register",
+      "validateOAuth",
+      "logout",
+      "forgotPassword",
+      "resetPassword",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);
