@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
-describe('AuthService', () => {
-  let service: AuthService;
+import { SportareaService } from './sportarea.service';
+
+describe('SportareaService', () => {
+  let service: SportareaService;
   const mockJwtService = {
-    sign: jest.fn(),
+    create: jest.fn(),
   };
   const mockClientGrpc = {
     getService: jest.fn(),
@@ -13,15 +14,15 @@ describe('AuthService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        AuthService,
+        SportareaService,
         {
-          provide: 'AUTH_PACKAGE',
+          provide: 'SPORTAREA_PACKAGE',
           useValue: mockClientGrpc,
         },
       ],
     }).compile();
 
-    service = module.get<AuthService>(AuthService);
+    service = module.get<SportareaService>(SportareaService);
   });
 
   it('should be defined', () => {

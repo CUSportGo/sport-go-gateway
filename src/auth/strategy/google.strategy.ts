@@ -5,7 +5,6 @@ import { Strategy, VerifyCallback, Profile } from 'passport-google-oauth20';
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor() {
-    console.log(process.env.GOOGLE_OAUTH_CALLBACK_URL);
     super({
       clientID: process.env.GOOGLE_OAUTH_CLIENT_ID,
       clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,

@@ -13,10 +13,10 @@ import { exceptionHandler } from '../common/exception-handler';
 import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
 import {
   AuthServiceClient,
+  ForgotPasswordRequest,
   LogoutRequest,
   ResetPasswordRequest,
-  ValidateGoogleRequest,
-  ValidateGoogleResponse,
+  ValidateOAuthRequest,
 } from './auth.pb';
 
 @Injectable()
@@ -42,13 +42,13 @@ export class AuthService implements OnModuleInit {
     );
   }
 
-  async googleLogin(request: ValidateGoogleRequest, response: Response) {
+  async OAuthLogin(request: ValidateOAuthRequest, response: Response) {
     if (!request) {
       throw new UnauthorizedException('Unauthorized user');
     }
 
     const credential = await firstValueFrom(
-      this.authClient.validateGoogle(request).pipe(
+      this.authClient.validateOAuth(request).pipe(
         catchError((error) => {
           this.logger.error(error);
           const exception = exceptionHandler.getExceptionFromGrpc(error);
@@ -61,6 +61,7 @@ export class AuthService implements OnModuleInit {
     response.cookie('refreshToken', credential.credential.refreshToken);
     response.status(301).redirect('http://localhost:3000');
   }
+
   async register(req: RegisterRequestDto) {
     return await firstValueFrom(
       this.authClient.register(req).pipe(
@@ -80,9 +81,21 @@ export class AuthService implements OnModuleInit {
           this.logger.error(error);
           const exception = exceptionHandler.getExceptionFromGrpc(error);
           throw exception;
-        })
-      )
-    )
+        }),
+      ),
+    );
+  }
+
+  async forgotPassword(req: ForgotPasswordRequest) {
+    return await firstValueFrom(
+      this.authClient.forgotPassword(req).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
   }
 
 
@@ -93,8 +106,11 @@ export class AuthService implements OnModuleInit {
           this.logger.error(error);
           const exception = exceptionHandler.getExceptionFromGrpc(error);
           throw exception;
-        })
-      )
-    )
+        }),
+      ),
+    );
   }
+
+
+
 }

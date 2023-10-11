@@ -6,13 +6,16 @@ describe('AdminService', () => {
   let service: AdminService;
   const mockHttpService = {
     patch: jest.fn(),
-  }
+  };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AdminService, {
-        provide: HttpService,
-        useValue: mockHttpService,
-      }],
+      providers: [
+        AdminService,
+        {
+          provide: HttpService,
+          useValue: mockHttpService,
+        },
+      ],
     }).compile();
 
     service = module.get<AdminService>(AdminService);

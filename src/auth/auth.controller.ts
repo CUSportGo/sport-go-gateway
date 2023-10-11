@@ -12,7 +12,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
-import { GoogleUser, LogoutRequest, ResetPasswordRequest, ValidateGoogleRequest } from './auth.pb';
+import { ForgotPasswordRequest, LogoutRequest, OAuthUser, ResetPasswordRequest, ValidateOAuthRequest } from './auth.pb';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -36,10 +36,25 @@ export class AuthController {
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
   googleAuthRediect(@Req() request: Request, @Res() response: Response) {
-    const validateRequest: ValidateGoogleRequest = {
-      user: request.user as GoogleUser,
+    const validateRequest: ValidateOAuthRequest = {
+      user: request.user as OAuthUser,
+      type: 'google',
     };
-    return this.authService.googleLogin(validateRequest, response);
+    return this.authService.OAuthLogin(validateRequest, response);
+  }
+
+  @Get('facebook')
+  @UseGuards(AuthGuard('facebook'))
+  facebookLogin() { }
+
+  @Get('facebook/redirect')
+  @UseGuards(AuthGuard('facebook'))
+  facebookAuthRedirect(@Req() request: Request, @Res() response: Response) {
+    const validateRequest: ValidateOAuthRequest = {
+      user: request.user as OAuthUser,
+      type: 'facebook',
+    };
+    return this.authService.OAuthLogin(validateRequest, response);
   }
 
   @Put('resetPassword')
@@ -50,6 +65,18 @@ export class AuthController {
       password: password,
     }
     return this.authService.resetPassword(request);
+  }
+
+
+
+  @Post('logout')
+  logout(@Body() req: LogoutRequest) {
+    return this.authService.logout(req);
+  }
+
+  @Post('forgotPassword')
+  forgotPassword(@Body() req: ForgotPasswordRequest) {
+    return this.authService.forgotPassword(req);
   }
 
 
