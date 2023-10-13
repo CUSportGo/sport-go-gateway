@@ -49,7 +49,7 @@ export interface RefreshTokenRequest {
 }
 
 export interface RefreshTokenResponse {
-  credential: Credential | undefined;
+  newAccessToken: string;
 }
 
 export interface ValidateOAuthRequest {
