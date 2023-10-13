@@ -1,6 +1,6 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { FileServiceClient } from './file.pb';
+import { FileServiceClient, UploadFileRequest } from './file.pb';
 
 @Injectable()
 export class FileService implements OnModuleInit {
@@ -11,4 +11,15 @@ export class FileService implements OnModuleInit {
   onModuleInit() {
     this.fileClient = this.client.getService<FileServiceClient>('FileService');
   }
+
+  async uploadFile(ownerId: string, filename: string, fileBuffer: Buffer) {
+    const request: UploadFileRequest = {
+      filename: filename,
+      data: fileBuffer,
+      userId: ownerId,
+    };
+    return this.fileClient.uploadFile(request);
+  }
+
+  async getSignedURL() {}
 }
