@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  FileValidator,
   Get,
+  MaxFileSizeValidator,
+  ParseFilePipe,
   Post,
   Put,
   UploadedFile,
@@ -18,7 +21,12 @@ export class FileController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   uploadFile(
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new MaxFileSizeValidator({ maxSize: 20000000 })],
+      }),
+    )
+    file: Express.Multer.File,
     @Body() body: UploadFileRequestDto,
   ) {
     return this.fileService.uploadFile(
