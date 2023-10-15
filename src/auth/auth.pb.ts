@@ -49,7 +49,7 @@ export interface RefreshTokenRequest {
 }
 
 export interface RefreshTokenResponse {
-  credential: Credential | undefined;
+  newAccessToken: string;
 }
 
 export interface ValidateOAuthRequest {
@@ -59,6 +59,15 @@ export interface ValidateOAuthRequest {
 
 export interface LogoutRequest {
   credential: Credential | undefined;
+}
+
+export interface ResetPasswordRequest {
+  accessToken: string;
+  password: string;
+}
+
+export interface ResetPasswordResponse {
+  isDone: boolean;
 }
 
 export interface LogoutResponse {
@@ -73,13 +82,13 @@ export interface ForgotPasswordResponse {
   resetPasswordUrl: string;
 }
 
-export interface ResetPasswordRequest {
-  accessToken: string;
-  password: string;
+export interface ValidateTokenRequest {
+  token: string;
 }
 
-export interface ResetPasswordResponse {
-  isDone: boolean;
+export interface ValidateTokenResponse {
+  userId: string;
+  role: string;
 }
 
 export const AUTH_PACKAGE_NAME = "auth";
@@ -91,13 +100,17 @@ export interface AuthServiceClient {
 
   register(request: RegisterRequest): Observable<RegisterResponse>;
 
+  /** rpc ValidateGoogle(ValidateGoogleRequest) returns (ValidateGoogleResponse) {} */
+
+  resetPassword(request: ResetPasswordRequest): Observable<ResetPasswordResponse>;
+
   validateOAuth(request: ValidateOAuthRequest): Observable<LoginResponse>;
 
   logout(request: LogoutRequest): Observable<LogoutResponse>;
 
-  forgotPassword(request: ForgotPasswordRequest): Observable<ForgotPasswordResponse>;
+  validateToken(request: ValidateTokenRequest): Observable<ValidateTokenResponse>;
 
-  resetPassword(request: ResetPasswordRequest): Observable<ResetPasswordResponse>;
+  forgotPassword(request: ForgotPasswordRequest): Observable<ForgotPasswordResponse>;
 }
 
 export interface AuthServiceController {
@@ -109,17 +122,23 @@ export interface AuthServiceController {
 
   register(request: RegisterRequest): Promise<RegisterResponse> | Observable<RegisterResponse> | RegisterResponse;
 
-  validateOAuth(request: ValidateOAuthRequest): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
-
-  logout(request: LogoutRequest): Promise<LogoutResponse> | Observable<LogoutResponse> | LogoutResponse;
-
-  forgotPassword(
-    request: ForgotPasswordRequest,
-  ): Promise<ForgotPasswordResponse> | Observable<ForgotPasswordResponse> | ForgotPasswordResponse;
+  /** rpc ValidateGoogle(ValidateGoogleRequest) returns (ValidateGoogleResponse) {} */
 
   resetPassword(
     request: ResetPasswordRequest,
   ): Promise<ResetPasswordResponse> | Observable<ResetPasswordResponse> | ResetPasswordResponse;
+
+  validateOAuth(request: ValidateOAuthRequest): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
+
+  logout(request: LogoutRequest): Promise<LogoutResponse> | Observable<LogoutResponse> | LogoutResponse;
+
+  validateToken(
+    request: ValidateTokenRequest,
+  ): Promise<ValidateTokenResponse> | Observable<ValidateTokenResponse> | ValidateTokenResponse;
+
+  forgotPassword(
+    request: ForgotPasswordRequest,
+  ): Promise<ForgotPasswordResponse> | Observable<ForgotPasswordResponse> | ForgotPasswordResponse;
 }
 
 export function AuthServiceControllerMethods() {
@@ -128,10 +147,11 @@ export function AuthServiceControllerMethods() {
       "login",
       "refreshToken",
       "register",
+      "resetPassword",
       "validateOAuth",
       "logout",
+      "validateToken",
       "forgotPassword",
-      "resetPassword",
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
