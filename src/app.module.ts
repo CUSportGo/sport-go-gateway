@@ -9,11 +9,11 @@ import { SportareaModule } from './sportarea/sportarea.module';
 
 @Module({
   imports: [
-    AuthModule,
-    AdminModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    AuthModule,
+    AdminModule,
     UserModule,
     SportareaModule,
   ],
