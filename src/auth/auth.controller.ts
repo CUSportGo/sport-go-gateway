@@ -87,9 +87,8 @@ export class AuthController {
     return this.authService.forgotPassword(req);
   }
 
-
   @Post('refreshToken')
   refreshToken(@Req() request: Request, @Res() response: Response) {
     return this.authService.getRefreshToken(request, response);
   }
-
+}
