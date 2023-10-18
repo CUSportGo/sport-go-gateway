@@ -138,7 +138,6 @@ export class AuthService implements OnModuleInit {
 
     res.cookie('accessToken', newToken.newAccessToken);
     res.cookie('accessTokenExpiresIn', newToken.accessTokenExpiresIn);
-    res.status(200);
     res.send();
   }
 }
