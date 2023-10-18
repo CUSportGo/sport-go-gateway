@@ -49,7 +49,8 @@ export interface RefreshTokenRequest {
 }
 
 export interface RefreshTokenResponse {
-  credential: Credential | undefined;
+  newAccessToken: string;
+  accessTokenExpiresIn: number;
 }
 
 export interface ValidateOAuthRequest {
