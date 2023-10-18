@@ -31,7 +31,7 @@ export class AuthService implements OnModuleInit {
   }
 
   async login(req: LoginRequestDto, response: Response) {
-    const credit = await firstValueFrom(
+    const authPayload = await firstValueFrom(
       this.authClient.login(req).pipe(
         catchError((error) => {
           this.logger.error(error);
@@ -40,13 +40,10 @@ export class AuthService implements OnModuleInit {
         }),
       ),
     );
-    response.cookie('accessToken', credit.credential.accessToken);
-    response.cookie('refreshToken', credit.credential.refreshToken);
+    response.cookie('accessToken', authPayload.credential.accessToken);
+    response.cookie('refreshToken', authPayload.credential.refreshToken);
     response.status(200);
-    response.send({
-      message: 'success',
-    });
-    return credit;
+    response.send();
   }
 
   async OAuthLogin(request: ValidateOAuthRequest, response: Response) {

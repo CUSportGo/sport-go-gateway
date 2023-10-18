@@ -5,6 +5,8 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { GoogleStrategy } from './strategy/google.strategy';
 import { FacebookStrategy } from './strategy/facebook.strategy';
+import { MiddlewareConsumer } from '@nestjs/common';
+import { AuthMiddleware } from './guard/auth.middleware';
 
 @Module({
   imports: [
@@ -23,4 +25,8 @@ import { FacebookStrategy } from './strategy/facebook.strategy';
   controllers: [AuthController],
   providers: [AuthService, GoogleStrategy, FacebookStrategy],
 })
-export class AuthModule {}
+export class AuthModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('auth/logout');
+  }
+}

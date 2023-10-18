@@ -11,22 +11,14 @@ export class RoleGuard implements CanActivate {
   ) {}
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
-    const user_info = await this.authService.validateToken(
-      request.cookies['accessToken'],
-    );
     const requiredRole = this.reflector.getAllAndOverride<string>('roles', [
       context.getHandler(),
       context.getClass(),
     ]);
 
-    if (user_info.role == '' || user_info.userId == '') {
-      return false;
-    }
-    request.userId = user_info.userId;
-    request.role = user_info.role;
-
+    console.log(request.role);
     if (!requiredRole || requiredRole.length === 0) return true;
 
-    return requiredRole.includes(user_info.role);
+    return requiredRole.includes(request.role);
   }
 }
