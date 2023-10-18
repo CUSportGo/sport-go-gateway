@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   Inject,
   Injectable,
   Logger,
@@ -121,6 +122,17 @@ export class AuthService implements OnModuleInit {
     );
   }
 
+  async validateToken(token: string) {
+    return await firstValueFrom(
+      this.authClient.validateToken({ token }).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
+  }
   async getRefreshToken(req: Request, res: Response) {
     if (!req || !req.cookies['refreshToken']) {
       throw new UnauthorizedException('Unauthorized user');

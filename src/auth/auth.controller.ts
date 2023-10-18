@@ -7,10 +7,11 @@ import {
   Put,
   Req,
   Res,
+  SetMetadata,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Request, Response } from 'express';
+import { Request, Response, response } from 'express';
 import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
 import {
   ForgotPasswordRequest,
@@ -20,6 +21,8 @@ import {
   ValidateOAuthRequest,
 } from './auth.pb';
 import { AuthService } from './auth.service';
+import { Roles } from './guard/role.decorator';
+import { RoleGuard } from './guard/role.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -29,7 +32,6 @@ export class AuthController {
   login(@Body() req: LoginRequestDto, @Res() response: Response) {
     return this.authService.login(req, response);
   }
-
   @Post('register')
   register(@Body() req: RegisterRequestDto) {
     return this.authService.register(req);
@@ -76,7 +78,7 @@ export class AuthController {
   }
 
   @Post('logout')
-  logout(@Body() req: LogoutRequest) {
+  logout(@Req() req: LogoutRequest) {
     return this.authService.logout(req);
   }
 
