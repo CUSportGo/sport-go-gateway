@@ -50,7 +50,6 @@ export class AuthService implements OnModuleInit {
       'refreshTokenExpiresIn',
       authPayload.credential.refreshTokenExpiresIn,
     );
-    response.status(200);
     response.send();
   }
 
