@@ -6,6 +6,8 @@ import { AuthService } from './auth.service';
 import { GoogleStrategy } from './strategy/google.strategy';
 import { FacebookStrategy } from './strategy/facebook.strategy';
 import { ConfigModule } from '@nestjs/config';
+import { AuthMiddleware } from './guard/auth.middleware';
+import { MiddlewareConsumer } from '@nestjs/common';
 
 @Module({
   imports: [
