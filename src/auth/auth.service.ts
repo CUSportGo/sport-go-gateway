@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   Inject,
   Injectable,
   Logger,
@@ -126,8 +127,7 @@ export class AuthService implements OnModuleInit {
       this.authClient.validateToken({ token }).pipe(
         catchError((error) => {
           this.logger.error(error);
-          const exception = exceptionHandler.getExceptionFromGrpc(error);
-          throw exception;
+          throw new ForbiddenException();
         }),
       ),
     );
