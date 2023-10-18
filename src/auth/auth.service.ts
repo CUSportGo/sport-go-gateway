@@ -127,7 +127,8 @@ export class AuthService implements OnModuleInit {
       this.authClient.validateToken({ token }).pipe(
         catchError((error) => {
           this.logger.error(error);
-          throw new ForbiddenException();
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
         }),
       ),
     );
