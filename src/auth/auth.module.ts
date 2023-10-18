@@ -27,8 +27,4 @@ import { MiddlewareConsumer } from '@nestjs/common';
   controllers: [AuthController],
   providers: [AuthService, GoogleStrategy, FacebookStrategy],
 })
-export class AuthModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes('auth/logout');
-  }
-}
+export class AuthModule {}
