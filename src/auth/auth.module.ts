@@ -5,11 +5,11 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { GoogleStrategy } from './strategy/google.strategy';
 import { FacebookStrategy } from './strategy/facebook.strategy';
-import { MiddlewareConsumer } from '@nestjs/common';
-import { AuthMiddleware } from './guard/auth.middleware';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     ClientsModule.register([
       {
         name: 'AUTH_PACKAGE',
@@ -17,7 +17,7 @@ import { AuthMiddleware } from './guard/auth.middleware';
         options: {
           package: 'auth',
           protoPath: join(__dirname, '../proto/auth.proto'),
-          url: 'localhost:8081',
+          url: process.env.AUTH_SERVICE_URL,
         },
       },
     ]),

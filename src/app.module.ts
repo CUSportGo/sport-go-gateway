@@ -12,11 +12,11 @@ import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
-    AuthModule,
-    AdminModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    AuthModule,
+    AdminModule,
     UserModule,
     SportareaModule,
   ],
