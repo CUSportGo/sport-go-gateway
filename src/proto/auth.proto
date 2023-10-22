@@ -6,11 +6,12 @@ service AuthService {
   rpc Login(LoginRequest) returns (LoginResponse) {}
   rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
   rpc Register(RegisterRequest) returns (RegisterResponse) {}
+  // rpc ValidateGoogle(ValidateGoogleRequest) returns (ValidateGoogleResponse) {}
+  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
   rpc ValidateOAuth(ValidateOAuthRequest) returns (LoginResponse) {}
   rpc Logout(LogoutRequest) returns (LogoutResponse) {}
+  rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse) {}
   rpc ForgotPassword(ForgotPasswordRequest) returns (ForgotPasswordResponse) {}
-  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
-
 }
 
 message RegisterRequest {
@@ -23,7 +24,7 @@ message RegisterRequest {
 }
 
 message RegisterResponse {
-string firstName =1;
+  string firstName =1;
   string lastName =2;
   string email =3;
   string phoneNumber =4;
@@ -54,11 +55,12 @@ message LoginResponse {
 }
 
 message RefreshTokenRequest {
-  string refresh_token = 1;
+  string refreshToken = 1;
 }
 
 message RefreshTokenResponse {
-  Credential credential = 1;
+  string newAccessToken = 1;
+  int32 accessTokenExpiresIn = 2;
 }
 
 message ValidateOAuthRequest {
@@ -70,6 +72,14 @@ message LogoutRequest {
   Credential credential = 1;
 }
 
+message ResetPasswordRequest {
+  string access_token = 1;
+  string password = 2;
+}
+
+message ResetPasswordResponse {
+  bool is_done = 1;
+}
 message LogoutResponse {
   bool is_done = 1;
 }
@@ -79,14 +89,14 @@ message ForgotPasswordRequest {
 }
 
 message ForgotPasswordResponse {
-  string resetPasswordUrl = 1;
+  string reset_password_url = 1;
 }
 
-message ResetPasswordRequest {
-  string access_token = 1;
-  string password = 2;
+message ValidateTokenRequest {
+  string token = 1;
 }
 
-message ResetPasswordResponse {
-  bool is_done = 1;
+message ValidateTokenResponse {
+  string userId =1;
+  string role = 2;
 }
