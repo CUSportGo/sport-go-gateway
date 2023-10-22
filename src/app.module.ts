@@ -15,6 +15,7 @@ import { UserController } from './user/user.controller';
 import { ClientsModule } from '@nestjs/microservices';
 import { join } from 'path';
 import { Transport } from '@nestjs/microservices';
+import { BookingModule } from './booking/booking.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { Transport } from '@nestjs/microservices';
     AdminModule,
     UserModule,
     SportareaModule,
+    BookingModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthService],
