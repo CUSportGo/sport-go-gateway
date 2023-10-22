@@ -3,10 +3,17 @@ import { BookingService } from './booking.service';
 
 describe('BookingService', () => {
   let service: BookingService;
+  const mockClientProxy = {};
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [BookingService],
+      providers: [
+        BookingService,
+        {
+          provide: 'BOOKING_RMQ_PACKAGE',
+          useValue: mockClientProxy,
+        },
+      ],
     }).compile();
 
     service = module.get<BookingService>(BookingService);
