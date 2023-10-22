@@ -7,6 +7,7 @@ import {
   ParseFilePipe,
   Post,
   Put,
+  Req,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -27,10 +28,10 @@ export class FileController {
       }),
     )
     file: Express.Multer.File,
-    @Body() body: UploadFileRequestDto,
+    @Req() request: any,
   ) {
     return this.fileService.uploadFile(
-      body.ownerId,
+      request.userId,
       file.originalname,
       file.buffer,
     );

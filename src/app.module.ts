@@ -16,6 +16,7 @@ import { ClientsModule } from '@nestjs/microservices';
 import { join } from 'path';
 import { Transport } from '@nestjs/microservices';
 import { FileModule } from './file/file.module';
+import { FileController } from './file/file.controller';
 
 @Module({
   imports: [
@@ -47,6 +48,11 @@ export class AppModule {
     consumer
       .apply(AuthMiddleware)
       .exclude('auth/login', 'auth/register')
-      .forRoutes(AuthController, AdminController, UserController);
+      .forRoutes(
+        AuthController,
+        AdminController,
+        UserController,
+        FileController,
+      );
   }
 }
