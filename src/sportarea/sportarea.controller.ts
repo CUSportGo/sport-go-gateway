@@ -1,14 +1,19 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { CreateSportareaRequest, SearchSportAreaRequest } from './sportarea.pb';
+import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
+import { CreateSportareaRequest, GetSportAreaByIdRequest, SearchSportAreaRequest } from './sportarea.pb';
 import { SportareaService } from './sportarea.service';
 
 @Controller('sportarea')
 export class SportareaController {
-  constructor(private sportareaService: SportareaService) {}
+  constructor(private sportareaService: SportareaService) { }
 
   @Post()
   create(@Body() req: CreateSportareaRequest) {
     return this.sportareaService.create(req);
+  }
+
+  @Get(':id')
+  getSportAreaById(@Param("id") sportAreaId: string) {
+    return this.sportareaService.getSportAreaById({ id: sportAreaId });
   }
 
   @Get()

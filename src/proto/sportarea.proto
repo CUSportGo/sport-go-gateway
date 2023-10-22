@@ -5,6 +5,7 @@ package sportarea;
 service SportareaService {
   rpc Create(CreateSportareaRequest) returns (CreateSportareaResponse) {}
   rpc SearchSportArea(SearchSportAreaRequest) returns (SearchSportAreaResponse) {}
+  rpc getSportAreaById(GetSportAreaByIdRequest) returns (GetSportAreaByIdResponse) {}
 }
 
 message CreateSportareaRequest {
@@ -58,4 +59,12 @@ message SportArea {
   string description = 6;
   float distance = 7;
   string price = 8;
+}
+
+message GetSportAreaByIdRequest {
+  string id = 1;
+}
+
+message GetSportAreaByIdResponse {
+  SportArea data = 1;
 }
