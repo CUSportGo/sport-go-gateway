@@ -15,6 +15,8 @@ import { UserController } from './user/user.controller';
 import { ClientsModule } from '@nestjs/microservices';
 import { join } from 'path';
 import { Transport } from '@nestjs/microservices';
+import { FileModule } from './file/file.module';
+import { FileController } from './file/file.controller';
 import { BookingModule } from './booking/booking.module';
 import { BookingController } from './booking/booking.controller';
 
@@ -38,7 +40,6 @@ import { BookingController } from './booking/booking.controller';
     AdminModule,
     UserModule,
     SportareaModule,
-    BookingModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthService],
@@ -53,6 +54,7 @@ export class AppModule {
         AdminController,
         UserController,
         BookingController,
+        FileController,
       );
   }
 }

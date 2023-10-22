@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "proto": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --proto_path=./src/proto --ts_proto_out=./src/auth auth.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb; protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --proto_path=./src/proto --ts_proto_out=./src/sportarea sportarea.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb"
+    "proto": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --proto_path=./src/proto --ts_proto_out=./src/auth auth.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb; protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --proto_path=./src/proto --ts_proto_out=./src/sportarea sportarea.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb; protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --proto_path=./src/proto --ts_proto_out=./src/file file.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.9.3",
@@ -30,6 +30,7 @@
     "@nestjs/microservices": "^10.2.5",
     "@nestjs/passport": "^10.0.2",
     "@nestjs/platform-express": "^9.0.0",
+    "@types/multer": "^1.4.8",
     "@types/passport-facebook": "^3.0.1",
     "@types/passport-google-oauth20": "^2.0.11",
     "amqp-connection-manager": "^4.1.14",
