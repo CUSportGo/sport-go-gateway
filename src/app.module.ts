@@ -15,6 +15,8 @@ import { UserController } from './user/user.controller';
 import { ClientsModule } from '@nestjs/microservices';
 import { join } from 'path';
 import { Transport } from '@nestjs/microservices';
+import { BookingModule } from './booking/booking.module';
+import { BookingController } from './booking/booking.controller';
 
 @Module({
   imports: [
@@ -36,6 +38,7 @@ import { Transport } from '@nestjs/microservices';
     AdminModule,
     UserModule,
     SportareaModule,
+    BookingModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthService],
@@ -45,6 +48,11 @@ export class AppModule {
     consumer
       .apply(AuthMiddleware)
       .exclude('auth/login', 'auth/register')
-      .forRoutes(AuthController, AdminController, UserController);
+      .forRoutes(
+        AuthController,
+        AdminController,
+        UserController,
+        BookingController,
+      );
   }
 }
