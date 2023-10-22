@@ -12,9 +12,7 @@ import { BookingInfo, CreateBookingRequestBody } from './booking.dto';
 export class BookingService {
   private readonly logger = new Logger(BookingService.name);
 
-  constructor(@Inject('BOOKING_RMQ_PACKAGE') private rmqClient: ClientProxy) {
-    this.rmqClient.connect();
-  }
+  constructor(@Inject('BOOKING_RMQ_PACKAGE') private rmqClient: ClientProxy) {}
 
   public async createBooking(
     booking: CreateBookingRequestBody,
