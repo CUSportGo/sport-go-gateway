@@ -17,6 +17,8 @@ import { join } from 'path';
 import { Transport } from '@nestjs/microservices';
 import { FileModule } from './file/file.module';
 import { FileController } from './file/file.controller';
+import { BookingModule } from './booking/booking.module';
+import { BookingController } from './booking/booking.controller';
 
 @Module({
   imports: [
@@ -38,7 +40,6 @@ import { FileController } from './file/file.controller';
     AdminModule,
     UserModule,
     SportareaModule,
-    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthService],
@@ -52,6 +53,7 @@ export class AppModule {
         AuthController,
         AdminController,
         UserController,
+        BookingController,
         FileController,
       );
   }
