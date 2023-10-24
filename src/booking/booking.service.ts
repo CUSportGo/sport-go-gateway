@@ -1,4 +1,6 @@
 import {
+  BadRequestException,
+  HttpException,
   Inject,
   Injectable,
   InternalServerErrorException,
@@ -19,12 +21,20 @@ export class BookingService {
     userId: string,
   ) {
     try {
+      const bookingStartAt = new Date(booking.startAt);
+      const bookingEndAt = new Date(booking.endAt);
+      if (bookingStartAt >= bookingEndAt) {
+        throw new BadRequestException('Invalid request body');
+      }
       const createBooking: BookingInfo = { ...booking, userID: userId };
       this.rmqClient.emit(CREATE_BOOKING_PATTERN, createBooking);
       return { isSuccess: true };
     } catch (error) {
       this.logger.error(error);
-      throw new InternalServerErrorException('Internal server error');
+      if (!(error instanceof HttpException)) {
+        throw new InternalServerErrorException('Internal server error');
+      }
+      throw error;
     }
   }
 }
