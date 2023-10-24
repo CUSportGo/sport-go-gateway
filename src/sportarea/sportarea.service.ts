@@ -13,6 +13,8 @@ import { exceptionHandler } from '../common/exception-handler';
 import {
   CreateSportareaRequest,
   CreateSportareaResponse,
+  GetSportAreaByIdRequest,
+  GetSportAreaByIdResponse,
   SearchSportAreaRequest,
   SearchSportAreaResponse,
   SportareaServiceClient,
@@ -24,7 +26,7 @@ export class SportareaService implements OnModuleInit {
   private searchSportAreaSubject: Subject<SearchSportAreaResponse> =
     new Subject<SearchSportAreaResponse>();
 
-  constructor(@Inject('SPORTAREA_PACKAGE') private client: ClientGrpc) {}
+  constructor(@Inject('SPORTAREA_PACKAGE') private client: ClientGrpc) { }
 
   onModuleInit() {
     this.sportareaClient =
@@ -34,6 +36,18 @@ export class SportareaService implements OnModuleInit {
   async create(req: CreateSportareaRequest): Promise<CreateSportareaResponse> {
     return await firstValueFrom(
       this.sportareaClient.create(req).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
+  }
+
+  async getSportAreaById(req: GetSportAreaByIdRequest): Promise<GetSportAreaByIdResponse> {
+    return await firstValueFrom(
+      this.sportareaClient.getSportAreaById(req).pipe(
         catchError((error) => {
           this.logger.error(error);
           const exception = exceptionHandler.getExceptionFromGrpc(error);
