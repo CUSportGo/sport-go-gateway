@@ -90,6 +90,14 @@ export interface GetSportAreaByIdResponse {
   data: SportArea | undefined;
 }
 
+export interface GetSportAreaByIdRequest {
+  id: string;
+}
+
+export interface GetSportAreaByIdResponse {
+  data: SportArea | undefined;
+}
+
 export const SPORTAREA_PACKAGE_NAME = "sportarea";
 
 export interface SportareaServiceClient {
