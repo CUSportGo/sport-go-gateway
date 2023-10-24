@@ -18,7 +18,7 @@ export class SportareaController {
 
   @Get()
   searchSportArea(
-    @Query('type') type: string,
+    @Query('type') type: string[],
     @Query('location') location: string,
     @Query('maxDistance') maxDistance: number,
     @Query('latitude') latitude: number,

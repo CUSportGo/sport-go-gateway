@@ -5,6 +5,7 @@ package sportarea;
 service SportareaService {
   rpc Create(CreateSportareaRequest) returns (CreateSportareaResponse) {}
   rpc SearchSportArea(SearchSportAreaRequest) returns (SearchSportAreaResponse) {}
+  rpc AddSportArea(AddSportAreaRequest) returns (AddSportAreaResponse) {}
   rpc getSportAreaById(GetSportAreaByIdRequest) returns (GetSportAreaByIdResponse) {}
 }
 
@@ -13,7 +14,7 @@ message CreateSportareaRequest {
   string imageURL =2;
   bool shower =3;
   bool carPark =4;
-  string sportType =5;
+  repeated string sportType =5;
   string location  =6 ;
   float latitude  =7 ;
   float longtitude = 8;
@@ -27,7 +28,7 @@ message CreateSportareaResponse {
   string imageURL =2;
   bool shower =3;
   bool carPark =4;
-  string sportType =5;
+  repeated string sportType =5;
   string location  =6 ;
   float latitude  =7 ;
   float longtitude = 8;
@@ -36,7 +37,7 @@ message CreateSportareaResponse {
 }
 
 message SearchSportAreaRequest {
-  string sportType = 1;
+  repeated string sportType = 1;
   string location = 2;
   float userLatitude = 3;
   float userLongitude = 4;
@@ -50,15 +51,41 @@ message SearchSportAreaResponse {
   repeated SportArea data = 1;
 }
 
+message AddSportAreaRequest{
+  string id = 1;
+  string sportType = 2;
+  string name = 3;
+  string openTime = 4;
+  string closeTime = 5;
+  string price = 6;
+}
+
+message AddSportAreaResponse{
+  SportArea data = 1;
+}
+
 message SportArea {
   string id = 1;
   string name = 2;
   string imageURL = 3;
-  string sportType = 4;
+  repeated string sportType = 4;
   string location = 5;
   string description = 6;
   float distance = 7;
   string price = 8;
+  repeated SportList sportList = 9;
+}
+
+message SportList {
+  string sportType = 1;
+  repeated SportDetail area = 2;
+}
+
+message SportDetail {
+  string name = 2;
+  string openTime = 3;
+  string closeTime = 4;
+  string price = 5;
 }
 
 message GetSportAreaByIdRequest {

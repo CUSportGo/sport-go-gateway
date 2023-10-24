@@ -9,7 +9,7 @@ export interface CreateSportareaRequest {
   imageURL: string;
   shower: boolean;
   carPark: boolean;
-  sportType: string;
+  sportType: string[];
   location: string;
   latitude: number;
   longtitude: number;
@@ -22,7 +22,7 @@ export interface CreateSportareaResponse {
   imageURL: string;
   shower: boolean;
   carPark: boolean;
-  sportType: string;
+  sportType: string[];
   location: string;
   latitude: number;
   longtitude: number;
@@ -31,7 +31,7 @@ export interface CreateSportareaResponse {
 }
 
 export interface SearchSportAreaRequest {
-  sportType: string;
+  sportType: string[];
   location: string;
   userLatitude: number;
   userLongitude: number;
@@ -45,15 +45,49 @@ export interface SearchSportAreaResponse {
   data: SportArea[];
 }
 
+export interface AddSportAreaRequest {
+  id: string;
+  sportType: string;
+  name: string;
+  openTime: string;
+  closeTime: string;
+  price: string;
+}
+
+export interface AddSportAreaResponse {
+  data: SportArea | undefined;
+}
+
 export interface SportArea {
   id: string;
   name: string;
   imageURL: string;
-  sportType: string;
+  sportType: string[];
   location: string;
   description: string;
   distance: number;
   price: string;
+  sportList: SportList[];
+}
+
+export interface SportList {
+  sportType: string;
+  area: SportDetail[];
+}
+
+export interface SportDetail {
+  name: string;
+  openTime: string;
+  closeTime: string;
+  price: string;
+}
+
+export interface GetSportAreaByIdRequest {
+  id: string;
+}
+
+export interface GetSportAreaByIdResponse {
+  data: SportArea | undefined;
 }
 
 export interface GetSportAreaByIdRequest {
@@ -71,6 +105,8 @@ export interface SportareaServiceClient {
 
   searchSportArea(request: SearchSportAreaRequest): Observable<SearchSportAreaResponse>;
 
+  addSportArea(request: AddSportAreaRequest): Observable<AddSportAreaResponse>;
+
   getSportAreaById(request: GetSportAreaByIdRequest): Observable<GetSportAreaByIdResponse>;
 }
 
@@ -83,6 +119,10 @@ export interface SportareaServiceController {
     request: SearchSportAreaRequest,
   ): Promise<SearchSportAreaResponse> | Observable<SearchSportAreaResponse> | SearchSportAreaResponse;
 
+  addSportArea(
+    request: AddSportAreaRequest,
+  ): Promise<AddSportAreaResponse> | Observable<AddSportAreaResponse> | AddSportAreaResponse;
+
   getSportAreaById(
     request: GetSportAreaByIdRequest,
   ): Promise<GetSportAreaByIdResponse> | Observable<GetSportAreaByIdResponse> | GetSportAreaByIdResponse;
@@ -90,7 +130,7 @@ export interface SportareaServiceController {
 
 export function SportareaServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["create", "searchSportArea", "getSportAreaById"];
+    const grpcMethods: string[] = ["create", "searchSportArea", "addSportArea", "getSportAreaById"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("SportareaService", method)(constructor.prototype[method], method, descriptor);
