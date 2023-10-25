@@ -15,6 +15,7 @@ export interface CreateSportareaRequest {
   longtitude: number;
   description: string;
   price: number;
+  userId: string;
 }
 
 export interface CreateSportareaResponse {
@@ -80,14 +81,6 @@ export interface SportDetail {
   openTime: string;
   closeTime: string;
   price: string;
-}
-
-export interface GetSportAreaByIdRequest {
-  id: string;
-}
-
-export interface GetSportAreaByIdResponse {
-  data: SportArea | undefined;
 }
 
 export interface GetSportAreaByIdRequest {

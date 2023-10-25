@@ -20,7 +20,7 @@ message CreateSportareaRequest {
   float longtitude = 8;
   string description = 9;
   int32 price = 10;
-  
+  string userId = 11;
 }
 
 message CreateSportareaResponse {
