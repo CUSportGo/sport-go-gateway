@@ -3,6 +3,8 @@ import {
   CreateSportareaRequest,
   GetSportAreaByIdRequest,
   SearchSportAreaRequest,
+  UpdateAreaRequest,
+  UpdateAreaResponse,
 } from './sportarea.pb';
 import { SportareaService } from './sportarea.service';
 import { Request } from 'express';
@@ -44,5 +46,10 @@ export class SportareaController {
       endTime: endTime,
     };
     return this.sportareaService.searchSportArea(request);
+  }
+
+  @Post('/updateAreaInfo')
+  updateAreaInfo(@Body() req: UpdateAreaRequest): Promise<UpdateAreaResponse> {
+    return this.sportareaService.updateAreaInfo(req);
   }
 }

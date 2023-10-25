@@ -18,6 +18,8 @@ import {
   SearchSportAreaRequest,
   SearchSportAreaResponse,
   SportareaServiceClient,
+  UpdateAreaRequest,
+  UpdateAreaResponse,
 } from './sportarea.pb';
 @Injectable()
 export class SportareaService implements OnModuleInit {
@@ -26,7 +28,7 @@ export class SportareaService implements OnModuleInit {
   private searchSportAreaSubject: Subject<SearchSportAreaResponse> =
     new Subject<SearchSportAreaResponse>();
 
-  constructor(@Inject('SPORTAREA_PACKAGE') private client: ClientGrpc) { }
+  constructor(@Inject('SPORTAREA_PACKAGE') private client: ClientGrpc) {}
 
   onModuleInit() {
     this.sportareaClient =
@@ -45,7 +47,9 @@ export class SportareaService implements OnModuleInit {
     );
   }
 
-  async getSportAreaById(req: GetSportAreaByIdRequest): Promise<GetSportAreaByIdResponse> {
+  async getSportAreaById(
+    req: GetSportAreaByIdRequest,
+  ): Promise<GetSportAreaByIdResponse> {
     return await firstValueFrom(
       this.sportareaClient.getSportAreaById(req).pipe(
         catchError((error) => {
@@ -88,6 +92,18 @@ export class SportareaService implements OnModuleInit {
 
     return await firstValueFrom(
       this.sportareaClient.searchSportArea(request).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
+  }
+
+  async updateAreaInfo(req: UpdateAreaRequest): Promise<UpdateAreaResponse> {
+    return await firstValueFrom(
+      this.sportareaClient.updateArea(req).pipe(
         catchError((error) => {
           this.logger.error(error);
           const exception = exceptionHandler.getExceptionFromGrpc(error);
