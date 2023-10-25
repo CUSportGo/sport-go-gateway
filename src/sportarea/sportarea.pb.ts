@@ -91,6 +91,34 @@ export interface GetSportAreaByIdResponse {
   data: SportArea | undefined;
 }
 
+export interface UpdateSportAreaRequest {
+  name: string;
+  imageURL: string;
+  shower: boolean;
+  carPark: boolean;
+  sportType: string[];
+  location: string;
+  latitude: number;
+  longtitude: number;
+  description: string;
+  price: number;
+  id: string;
+}
+
+export interface UpdateSportAreaResponse {
+  name: string;
+  imageURL: string;
+  shower: boolean;
+  carPark: boolean;
+  sportType: string[];
+  location: string;
+  latitude: number;
+  longtitude: number;
+  description: string;
+  price: number;
+  id: string;
+}
+
 export const SPORTAREA_PACKAGE_NAME = "sportarea";
 
 export interface SportareaServiceClient {
@@ -101,6 +129,8 @@ export interface SportareaServiceClient {
   addSportArea(request: AddSportAreaRequest): Observable<AddSportAreaResponse>;
 
   getSportAreaById(request: GetSportAreaByIdRequest): Observable<GetSportAreaByIdResponse>;
+
+  updateSportArea(request: UpdateSportAreaRequest): Observable<UpdateSportAreaResponse>;
 }
 
 export interface SportareaServiceController {
@@ -119,11 +149,15 @@ export interface SportareaServiceController {
   getSportAreaById(
     request: GetSportAreaByIdRequest,
   ): Promise<GetSportAreaByIdResponse> | Observable<GetSportAreaByIdResponse> | GetSportAreaByIdResponse;
+
+  updateSportArea(
+    request: UpdateSportAreaRequest,
+  ): Promise<UpdateSportAreaResponse> | Observable<UpdateSportAreaResponse> | UpdateSportAreaResponse;
 }
 
 export function SportareaServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["create", "searchSportArea", "addSportArea", "getSportAreaById"];
+    const grpcMethods: string[] = ["create", "searchSportArea", "addSportArea", "getSportAreaById", "updateSportArea"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("SportareaService", method)(constructor.prototype[method], method, descriptor);

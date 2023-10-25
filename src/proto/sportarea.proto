@@ -7,6 +7,7 @@ service SportareaService {
   rpc SearchSportArea(SearchSportAreaRequest) returns (SearchSportAreaResponse) {}
   rpc AddSportArea(AddSportAreaRequest) returns (AddSportAreaResponse) {}
   rpc getSportAreaById(GetSportAreaByIdRequest) returns (GetSportAreaByIdResponse) {}
+  rpc UpdateSportArea(UpdateSportAreaRequest) returns (UpdateSportAreaResponse) {}
 }
 
 message CreateSportareaRequest {
@@ -94,4 +95,32 @@ message GetSportAreaByIdRequest {
 
 message GetSportAreaByIdResponse {
   SportArea data = 1;
+}
+
+message UpdateSportAreaRequest {
+  string name =1;
+  string imageURL =2;
+  bool shower =3;
+  bool carPark =4;
+  repeated string sportType =5;
+  string location  =6 ;
+  float latitude  =7 ;
+  float longtitude = 8;
+  string description = 9;
+  int32 price = 10;
+  string id = 11;
+}
+
+message UpdateSportAreaResponse {
+  string name =1;
+  string imageURL =2;
+  bool shower =3;
+  bool carPark =4;
+  repeated string sportType =5;
+  string location  =6 ;
+  float latitude  =7 ;
+  float longtitude = 8;
+  string description = 9;
+  int32 price = 10;
+  string id = 11;
 }
