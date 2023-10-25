@@ -41,6 +41,7 @@ import { SportareaController } from './sportarea/sportarea.controller';
     AdminModule,
     UserModule,
     SportareaModule,
+    BookingModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthService],
