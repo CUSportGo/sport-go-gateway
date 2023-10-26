@@ -5,6 +5,12 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "assets": ["**/*.proto"],
-    "watchAssets": true
+    "watchAssets": true,
+    "plugins": [{
+      "name": "@nestjs/swagger",
+      "options": {
+        "introspectComments": true
+      }
+    }]
   }
 }
