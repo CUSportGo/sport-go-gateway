@@ -1,3 +1,4 @@
+import { ApiBody, ApiProperty } from '@nestjs/swagger';
 import {
   IsArray,
   IsBoolean,
@@ -10,29 +11,18 @@ import {
 } from 'class-validator';
 
 export class UpdateSportAreaRequestBody {
-  @IsOptional()
-  @IsString()
   name?: string;
 
   @IsOptional()
   @IsUrl()
   imageURL?: string;
 
-  @IsOptional()
-  @IsBoolean()
   shower?: boolean;
 
-  @IsOptional()
-  @IsBoolean()
   carPark?: boolean;
 
-  @IsOptional()
-  @IsArray()
-  @IsString()
-  sportTyle?: string[];
+  sportType?: string[];
 
-  @IsOptional()
-  @IsString()
   location?: string;
 
   @IsOptional()
@@ -43,11 +33,23 @@ export class UpdateSportAreaRequestBody {
   @IsLongitude()
   longitude?: number;
 
-  @IsOptional()
-  @IsString()
   description?: string;
 
   @IsOptional()
   @IsPositive()
   price?: number;
+}
+
+export class SportAreaResponse {
+  id: string;
+  name: string;
+  imageURL: string;
+  shower: boolean;
+  carPark: boolean;
+  sportType: string[];
+  location: string;
+  latitude: number;
+  longitude: number;
+  description: string;
+  price: number;
 }
