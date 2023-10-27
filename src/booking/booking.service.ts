@@ -7,7 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CREATE_BOOKING_PATTERN } from '../constant/booking.constant';
+import { CANCEL_BOOKING_PATTERN, CREATE_BOOKING_PATTERN } from '../constant/booking.constant';
 import { BookingInfo, CreateBookingRequestBody } from './booking.dto';
 
 @Injectable()
@@ -28,6 +28,19 @@ export class BookingService {
       }
       const createBooking: BookingInfo = { ...booking, userID: userId };
       this.rmqClient.emit(CREATE_BOOKING_PATTERN, createBooking);
+      return { isSuccess: true };
+    } catch (error) {
+      this.logger.error(error);
+      if (!(error instanceof HttpException)) {
+        throw new InternalServerErrorException('Internal server error');
+      }
+      throw error;
+    }
+  }
+
+  public async cancelBooking(bookingId: string) {
+    try {
+      this.rmqClient.emit(CANCEL_BOOKING_PATTERN, bookingId);
       return { isSuccess: true };
     } catch (error) {
       this.logger.error(error);
