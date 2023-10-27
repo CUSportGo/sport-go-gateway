@@ -61,34 +61,6 @@ export class SportareaService implements OnModuleInit {
   }
 
   async searchSportArea(request: SearchSportAreaRequest) {
-    if (request.maxDistance == undefined) {
-      request.maxDistance = 10;
-    }
-    if (request.date == undefined) {
-      const currentDate = new Date();
-      if ((currentDate.getHours() + 1) % 24 == 0) {
-        currentDate.setDate(currentDate.getDate() + 1);
-      }
-      const currentYear = currentDate.getFullYear();
-      const currentMonth = currentDate.getMonth() + 1;
-      const currentDay = currentDate.getDate();
-      request.date = `${currentYear}-${currentMonth
-        .toString()
-        .padStart(2, '0')}-${currentDay.toString().padStart(2, '0')}`;
-    }
-
-    if (request.startTime == undefined) {
-      const currentDate = new Date();
-      const startHour = (currentDate.getHours() + 1) % 24;
-      request.startTime = `${startHour.toString().padStart(2, '0')}:00`;
-    }
-
-    if (request.endTime == undefined) {
-      const currentDate = new Date();
-      const endHour = (currentDate.getHours() + 2) % 24;
-      request.endTime = `${endHour.toString().padStart(2, '0')}:00`;
-    }
-
     return await firstValueFrom(
       this.sportareaClient.searchSportArea(request).pipe(
         catchError((error) => {

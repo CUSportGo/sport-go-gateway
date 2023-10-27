@@ -15,8 +15,19 @@ import {
 } from './sportarea.pb';
 import { SportareaService } from './sportarea.service';
 import { Request } from 'express';
-import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { SportAreaResponse, UpdateSportAreaRequestBody } from './sportarea.dto';
+import {
+  ApiBody,
+  ApiOkResponse,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  SearchSportAreaQuery,
+  SportAreaResponse,
+  UpdateSportAreaRequestBody,
+} from './sportarea.dto';
+import { SportTypeEnum } from '../model/enum/sportType.enum';
 
 @Controller('sportarea')
 @ApiTags('sportarea')
@@ -35,25 +46,25 @@ export class SportareaController {
   }
 
   @Get()
-  searchSportArea(
-    @Query('type') type: string[],
-    @Query('location') location: string,
-    @Query('maxDistance') maxDistance: number,
-    @Query('latitude') latitude: number,
-    @Query('longitude') longtitude: number,
-    @Query('date') date: string,
-    @Query('startTime') startTime: string,
-    @Query('endTime') endTime: string,
-  ) {
+  @ApiQuery({
+    name: 'type',
+    enum: SportTypeEnum,
+    isArray: true,
+    required: false,
+  })
+  searchSportArea(@Query() query: SearchSportAreaQuery, @Query('type') type) {
+    let sportType = [];
+    if (type || type instanceof String) {
+      sportType.push(type);
+    } else {
+      sportType = type;
+    }
     const request: SearchSportAreaRequest = {
-      sportType: type,
-      location: location,
-      maxDistance: maxDistance,
-      userLatitude: latitude,
-      userLongitude: longtitude,
-      date: date,
-      startTime: startTime,
-      endTime: endTime,
+      sportType: sportType,
+      keyword: query.keyword || '',
+      maxDistance: query.maxDistance || 10,
+      userLatitude: query.latitude,
+      userLongitude: query.longitude,
     };
     return this.sportareaService.searchSportArea(request);
   }
