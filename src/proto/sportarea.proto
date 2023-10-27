@@ -39,17 +39,25 @@ message CreateSportareaResponse {
 
 message SearchSportAreaRequest {
   repeated string sportType = 1;
-  string location = 2;
+  string keyword = 2;
   float userLatitude = 3;
   float userLongitude = 4;
   int32 maxDistance = 5;
-  string date = 6;
-  string startTime = 7;
-  string endTime = 8;
 }
 
 message SearchSportAreaResponse {
-  repeated SportArea data = 1;
+  repeated SearchSportAreaItem data = 1;
+}
+
+message SearchSportAreaItem {
+  string id = 1;
+  string name = 2;
+  string imageURL = 3;
+  repeated string sportType = 4;
+  string location = 5;
+  string description = 6;
+  float distance = 7;
+  string price = 8;
 }
 
 message AddSportAreaRequest{
@@ -72,9 +80,8 @@ message SportArea {
   repeated string sportType = 4;
   string location = 5;
   string description = 6;
-  float distance = 7;
-  string price = 8;
-  repeated SportList sportList = 9;
+  string price = 7;
+  repeated SportList sportList = 8;
 }
 
 message SportList {
