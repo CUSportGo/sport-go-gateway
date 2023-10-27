@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 
 import { ClientGrpc } from '@nestjs/microservices';
+import { resolveSoa } from 'dns';
 import { Request, Response } from 'express';
 import { catchError, firstValueFrom, map } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
@@ -86,8 +87,8 @@ export class AuthService implements OnModuleInit {
     );
   }
 
-  async logout(req: LogoutRequest) {
-    return await firstValueFrom(
+  async logout(req: LogoutRequest, res: Response) {
+    const result = await firstValueFrom(
       this.authClient.logout(req).pipe(
         catchError((error) => {
           this.logger.error(error);
@@ -96,6 +97,10 @@ export class AuthService implements OnModuleInit {
         }),
       ),
     );
+
+    res.cookie('accessToken', '');
+    res.cookie('refreshToken', '');
+    res.json(result);
   }
 
   async forgotPassword(req: ForgotPasswordRequest) {

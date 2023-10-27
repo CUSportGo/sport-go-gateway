@@ -37,10 +37,6 @@ export class AuthController {
     return this.authService.register(req);
   }
 
-  // @Get('google')
-  // @UseGuards(AuthGuard('google'))
-  // async googleAuth() { }
-
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
   googleAuthRediect(@Req() request: Request, @Res() response: Response) {
@@ -78,8 +74,9 @@ export class AuthController {
   }
 
   @Post('logout')
-  logout(@Body() req: LogoutRequest) {
-    return this.authService.logout(req);
+  logout(@Req() request: any, @Res() response: Response) {
+    const accessToken = request.cookies['accessToken'];
+    return this.authService.logout({ accessToken }, response);
   }
 
   @Post('forgotPassword')
