@@ -18,6 +18,7 @@ export class BookingController {
   @Post('cancel/:id')
   cancelBooking(@Req() request: any) {
     const bookingId = request.params.id;
-    return this.bookingService.cancelBooking(bookingId);
+    const userId = request.userId;
+    return this.bookingService.cancelBooking(bookingId, userId);
   }
 }

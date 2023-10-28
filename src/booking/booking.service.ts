@@ -38,9 +38,10 @@ export class BookingService {
     }
   }
 
-  public async cancelBooking(bookingId: string) {
+  public async cancelBooking(bookingId: string, userId: string) {
     try {
-      this.rmqClient.emit(CANCEL_BOOKING_PATTERN, bookingId);
+      const cancelBooking = { bookingID: bookingId, userID: userId };
+      this.rmqClient.emit(CANCEL_BOOKING_PATTERN, cancelBooking);
       return { isSuccess: true };
     } catch (error) {
       this.logger.error(error);
