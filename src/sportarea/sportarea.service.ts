@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Inject,
   Injectable,
   Logger,
@@ -102,6 +103,11 @@ export class SportareaService implements OnModuleInit {
   }
 
   async updateAreaInfo(req: UpdateAreaRequest): Promise<UpdateAreaResponse> {
+    const timeFormat = /^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+    if (!timeFormat.test(req.openTime) || !timeFormat.test(req.closeTime)) {
+      throw new BadRequestException('invalid time format');
+    }
+
     return await firstValueFrom(
       this.sportareaClient.updateArea(req).pipe(
         catchError((error) => {

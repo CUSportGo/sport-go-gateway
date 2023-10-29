@@ -62,7 +62,7 @@ export interface AddSportAreaResponse {
 export interface UpdateAreaRequest {
   id: string;
   sportType: string;
-  index: string;
+  areaId: string;
   name: string;
   openTime: string;
   closeTime: string;
