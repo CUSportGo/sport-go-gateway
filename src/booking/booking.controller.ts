@@ -20,4 +20,11 @@ export class BookingController {
   getAvailableBooking(@Body() request: GetAvailableBookingRequest) {
     return this.bookingService.getAvailableBooking(request);
   }
+
+  @Post('cancel/:id')
+  cancelBooking(@Req() request: any) {
+    const bookingId = request.params.id;
+    const userId = request.userId;
+    return this.bookingService.cancelBooking(bookingId, userId);
+  }
 }

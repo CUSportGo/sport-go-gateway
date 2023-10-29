@@ -19,6 +19,7 @@ import { FileModule } from './file/file.module';
 import { FileController } from './file/file.controller';
 import { BookingModule } from './booking/booking.module';
 import { BookingController } from './booking/booking.controller';
+import { SportareaController } from './sportarea/sportarea.controller';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ export class AppModule {
         UserController,
         BookingController,
         FileController,
+        SportareaController,
       );
   }
 }

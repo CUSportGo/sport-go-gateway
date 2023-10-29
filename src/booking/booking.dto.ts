@@ -9,6 +9,11 @@ export class CreateBookingRequestBody {
   @IsDefined()
   @IsString()
   @IsNotEmpty()
+  sportType: string;
+
+  @IsDefined()
+  @IsString()
+  @IsNotEmpty()
   areaID: string;
 
   @IsDefined()
@@ -25,6 +30,7 @@ export class CreateBookingRequestBody {
 
 export interface BookingInfo {
   sportAreaID: string;
+  sportType: string;
   areaID: string;
   userID: string;
   startAt: string;
