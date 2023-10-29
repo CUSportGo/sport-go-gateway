@@ -40,6 +40,7 @@ import { BookingController } from './booking/booking.controller';
     AdminModule,
     UserModule,
     SportareaModule,
+    BookingModule
   ],
   controllers: [AppController],
   providers: [AppService, AuthService],

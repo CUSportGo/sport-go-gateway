@@ -4,15 +4,23 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientGrpc, ClientProxy } from '@nestjs/microservices';
 import { CREATE_BOOKING_PATTERN } from '../constant/booking.constant';
 import { BookingInfo, CreateBookingRequestBody } from './booking.dto';
+import { BookingServiceClient, GetAvailableBookingRequest, GetAvailableBookingResponse } from './booking.pb';
+import { catchError, firstValueFrom } from 'rxjs';
+import { exceptionHandler } from 'src/common/exception-handler';
 
 @Injectable()
 export class BookingService {
+  private bookingClient: BookingServiceClient;
   private readonly logger = new Logger(BookingService.name);
 
-  constructor(@Inject('BOOKING_RMQ_PACKAGE') private rmqClient: ClientProxy) {}
+  constructor(@Inject('BOOKING_RMQ_PACKAGE') private rmqClient: ClientProxy, @Inject('BOOKING_PACKAGE') private client: ClientGrpc) { }
+
+  onModuleInit() {
+    this.bookingClient = this.client.getService<BookingServiceClient>('BookingService');
+  }
 
   public async createBooking(
     booking: CreateBookingRequestBody,
@@ -27,4 +35,17 @@ export class BookingService {
       throw new InternalServerErrorException('Internal server error');
     }
   }
+
+  async getAvailableBooking(request: GetAvailableBookingRequest): Promise<GetAvailableBookingResponse> {
+    return await firstValueFrom(
+      this.bookingClient.getAvailableBooking(request).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
+  }
+
 }

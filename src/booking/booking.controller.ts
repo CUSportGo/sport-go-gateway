@@ -1,10 +1,11 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { CreateBookingRequestBody } from './booking.dto';
 import { BookingService } from './booking.service';
+import { GetAvailableBookingRequest } from './booking.pb';
 
 @Controller('booking')
 export class BookingController {
-  constructor(private bookingService: BookingService) {}
+  constructor(private bookingService: BookingService) { }
 
   @Post()
   createBooking(
@@ -13,5 +14,10 @@ export class BookingController {
   ) {
     const userId = request.userId;
     return this.bookingService.createBooking(booking, userId);
+  }
+
+  @Post('available')
+  getAvailableBooking(@Body() request: GetAvailableBookingRequest) {
+    return this.bookingService.getAvailableBooking(request);
   }
 }
