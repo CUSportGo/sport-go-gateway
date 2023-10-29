@@ -8,8 +8,10 @@ import {
 
 import { ClientGrpc } from '@nestjs/microservices';
 import { Response } from 'express';
+import { request } from 'http';
 import { catchError, firstValueFrom, map, Subject } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
+import { UpdateSportAreaRequestBody } from './sportarea.dto';
 import {
   CreateSportareaRequest,
   CreateSportareaResponse,
@@ -18,15 +20,14 @@ import {
   SearchSportAreaRequest,
   SearchSportAreaResponse,
   SportareaServiceClient,
+  UpdateSportAreaRequest,
 } from './sportarea.pb';
 @Injectable()
 export class SportareaService implements OnModuleInit {
   private sportareaClient: SportareaServiceClient;
   private readonly logger = new Logger(SportareaService.name);
-  private searchSportAreaSubject: Subject<SearchSportAreaResponse> =
-    new Subject<SearchSportAreaResponse>();
 
-  constructor(@Inject('SPORTAREA_PACKAGE') private client: ClientGrpc) { }
+  constructor(@Inject('SPORTAREA_PACKAGE') private client: ClientGrpc) {}
 
   onModuleInit() {
     this.sportareaClient =
@@ -45,7 +46,9 @@ export class SportareaService implements OnModuleInit {
     );
   }
 
-  async getSportAreaById(req: GetSportAreaByIdRequest): Promise<GetSportAreaByIdResponse> {
+  async getSportAreaById(
+    req: GetSportAreaByIdRequest,
+  ): Promise<GetSportAreaByIdResponse> {
     return await firstValueFrom(
       this.sportareaClient.getSportAreaById(req).pipe(
         catchError((error) => {
@@ -88,6 +91,36 @@ export class SportareaService implements OnModuleInit {
 
     return await firstValueFrom(
       this.sportareaClient.searchSportArea(request).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
+  }
+
+  async updateSportArea(
+    requestBody: UpdateSportAreaRequestBody,
+    sportAreaId: string,
+    userId: string,
+  ) {
+    const updateSportArea: UpdateSportAreaRequest = {
+      id: sportAreaId,
+      name: requestBody.name,
+      imageURL: requestBody.imageURL,
+      shower: requestBody.shower,
+      carPark: requestBody.carPark,
+      sportType: requestBody.sportType,
+      location: requestBody.location,
+      latitude: requestBody.latitude,
+      longtitude: requestBody.longitude,
+      description: requestBody.description,
+      price: requestBody.price,
+    };
+
+    return await firstValueFrom(
+      this.sportareaClient.updateSportArea(updateSportArea).pipe(
         catchError((error) => {
           this.logger.error(error);
           const exception = exceptionHandler.getExceptionFromGrpc(error);
