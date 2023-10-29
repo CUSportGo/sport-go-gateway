@@ -102,34 +102,4 @@ export class SportareaService implements OnModuleInit {
       ),
     );
   }
-
-  async updateSportArea(
-    requestBody: UpdateSportAreaRequestBody,
-    sportAreaId: string,
-    userId: string,
-  ) {
-    const updateSportArea: UpdateSportAreaRequest = {
-      id: sportAreaId,
-      name: requestBody.name,
-      imageURL: requestBody.imageURL,
-      shower: requestBody.shower,
-      carPark: requestBody.carPark,
-      sportType: requestBody.sportType,
-      location: requestBody.location,
-      latitude: requestBody.latitude,
-      longtitude: requestBody.longitude,
-      description: requestBody.description,
-      price: requestBody.price,
-    };
-
-    return await firstValueFrom(
-      this.sportareaClient.updateSportArea(updateSportArea).pipe(
-        catchError((error) => {
-          this.logger.error(error);
-          const exception = exceptionHandler.getExceptionFromGrpc(error);
-          throw exception;
-        }),
-      ),
-    );
-  }
 }
