@@ -33,17 +33,25 @@ export interface CreateSportareaResponse {
 
 export interface SearchSportAreaRequest {
   sportType: string[];
-  location: string;
+  keyword: string;
   userLatitude: number;
   userLongitude: number;
   maxDistance: number;
-  date: string;
-  startTime: string;
-  endTime: string;
 }
 
 export interface SearchSportAreaResponse {
-  data: SportArea[];
+  data: SearchSportAreaItem[];
+}
+
+export interface SearchSportAreaItem {
+  id: string;
+  name: string;
+  imageURL: string;
+  sportType: string[];
+  location: string;
+  description: string;
+  distance: number;
+  price: string;
 }
 
 export interface AddSportAreaRequest {
@@ -66,7 +74,6 @@ export interface SportArea {
   sportType: string[];
   location: string;
   description: string;
-  distance: number;
   price: string;
   sportList: SportList[];
 }
@@ -103,6 +110,7 @@ export interface UpdateSportAreaRequest {
   description: string;
   price: number;
   id: string;
+  userId: string;
 }
 
 export interface UpdateSportAreaResponse {

@@ -1,14 +1,14 @@
-import { ApiBody, ApiProperty } from '@nestjs/swagger';
+import { ApiParam, ApiProperty, ApiQuery } from '@nestjs/swagger';
 import {
   IsArray,
-  IsBoolean,
+  IsEnum,
   IsLatitude,
   IsLongitude,
   IsOptional,
   IsPositive,
-  IsString,
   IsUrl,
 } from 'class-validator';
+import { SportTypeEnum } from '../model/enum/sportType.enum';
 
 export class UpdateSportAreaRequestBody {
   name?: string;
@@ -38,6 +38,17 @@ export class UpdateSportAreaRequestBody {
   @IsOptional()
   @IsPositive()
   price?: number;
+}
+
+export class SearchSportAreaQuery {
+  keyword?: string;
+  maxDistance?: number;
+
+  @IsLatitude()
+  latitude: number;
+
+  @IsLongitude()
+  longitude: number;
 }
 
 export class SportAreaResponse {
