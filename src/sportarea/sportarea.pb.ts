@@ -110,6 +110,7 @@ export interface UpdateSportAreaRequest {
   description: string;
   price: number;
   id: string;
+  userId: string;
 }
 
 export interface UpdateSportAreaResponse {

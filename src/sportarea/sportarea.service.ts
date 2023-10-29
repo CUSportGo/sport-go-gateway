@@ -89,6 +89,7 @@ export class SportareaService implements OnModuleInit {
       longtitude: requestBody.longitude,
       description: requestBody.description,
       price: requestBody.price,
+      userId: userId,
     };
 
     return await firstValueFrom(

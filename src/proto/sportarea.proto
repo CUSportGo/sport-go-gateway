@@ -116,6 +116,7 @@ message UpdateSportAreaRequest {
   string description = 9;
   int32 price = 10;
   string id = 11;
+  string userId = 12;
 }
 
 message UpdateSportAreaResponse {
