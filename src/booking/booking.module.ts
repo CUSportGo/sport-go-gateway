@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { BookingController } from './booking.controller';
 import { BookingService } from './booking.service';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -17,9 +18,18 @@ import { BookingService } from './booking.service';
           },
         },
       },
+      {
+        name: 'BOOKING_PACKAGE',
+        transport: Transport.GRPC,
+        options: {
+          package: 'booking',
+          protoPath: join(__dirname, '../proto/booking.proto'),
+          url: process.env.BOOKING_SERVICE_URL,
+        },
+      },
     ]),
   ],
   controllers: [BookingController],
   providers: [BookingService],
 })
-export class BookingModule {}
+export class BookingModule { }
