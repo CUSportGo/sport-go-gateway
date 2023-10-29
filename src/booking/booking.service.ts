@@ -11,7 +11,7 @@ import { CANCEL_BOOKING_PATTERN, CREATE_BOOKING_PATTERN } from '../constant/book
 import { BookingInfo, CreateBookingRequestBody } from './booking.dto';
 import { BookingServiceClient, GetAvailableBookingRequest, GetAvailableBookingResponse } from './booking.pb';
 import { catchError, firstValueFrom } from 'rxjs';
-import { exceptionHandler } from 'src/common/exception-handler';
+import { exceptionHandler } from '../common/exception-handler';
 
 @Injectable()
 export class BookingService {
