@@ -27,4 +27,11 @@ export class BookingController {
     const userId = request.userId;
     return this.bookingService.cancelBooking(bookingId, userId);
   }
+
+  @Post('confirm/:id')
+  confirmBooking(@Req() request: any) {
+    const bookingId = request.params.id;
+    const userId = request.userId;
+    return this.bookingService.confirmBooking(bookingId, userId);
+  }
 }
