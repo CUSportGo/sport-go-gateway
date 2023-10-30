@@ -95,7 +95,20 @@ export interface GetSportAreaByIdRequest {
 }
 
 export interface GetSportAreaByIdResponse {
-  data: SportArea | undefined;
+  data: GetSportAreaByIdItem | undefined;
+}
+
+export interface GetSportAreaByIdItem {
+  id: string;
+  name: string;
+  imageURL: string;
+  shower: boolean;
+  carPark: boolean;
+  sportType: string[];
+  location: string;
+  description: string;
+  price: string;
+  sportList: SportList[];
 }
 
 export interface UpdateSportAreaRequest {

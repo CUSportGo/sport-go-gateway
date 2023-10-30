@@ -101,7 +101,20 @@ message GetSportAreaByIdRequest {
 }
 
 message GetSportAreaByIdResponse {
-  SportArea data = 1;
+  GetSportAreaByIdItem data = 1;
+}
+
+message GetSportAreaByIdItem {
+  string id = 1;
+  string name = 2;
+  string imageURL = 3;
+  bool shower = 4;
+  bool carPark = 5;
+  repeated string sportType = 6;
+  string location = 7;
+  string description = 8;
+  string price = 9;
+  repeated SportList sportList = 10;
 }
 
 message UpdateSportAreaRequest {
