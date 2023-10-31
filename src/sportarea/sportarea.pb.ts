@@ -6,7 +6,7 @@ export const protobufPackage = "sportarea";
 
 export interface CreateSportareaRequest {
   name: string;
-  imageURL: string;
+  image: string[];
   shower: boolean;
   carPark: boolean;
   sportType: string[];
@@ -20,7 +20,7 @@ export interface CreateSportareaRequest {
 
 export interface CreateSportareaResponse {
   name: string;
-  imageURL: string;
+  image: string[];
   shower: boolean;
   carPark: boolean;
   sportType: string[];
@@ -46,7 +46,7 @@ export interface SearchSportAreaResponse {
 export interface SearchSportAreaItem {
   id: string;
   name: string;
-  imageURL: string;
+  image: string[];
   sportType: string[];
   location: string;
   description: string;
@@ -70,7 +70,7 @@ export interface AddSportAreaResponse {
 export interface SportArea {
   id: string;
   name: string;
-  imageURL: string;
+  image: string[];
   sportType: string[];
   location: string;
   description: string;
@@ -101,7 +101,7 @@ export interface GetSportAreaByIdResponse {
 export interface GetSportAreaByIdItem {
   id: string;
   name: string;
-  imageURL: string;
+  image: string[];
   shower: boolean;
   carPark: boolean;
   sportType: string[];
@@ -113,7 +113,7 @@ export interface GetSportAreaByIdItem {
 
 export interface UpdateSportAreaRequest {
   name: string;
-  imageURL: string;
+  image: string[];
   shower: boolean;
   carPark: boolean;
   sportType: string[];
@@ -128,7 +128,7 @@ export interface UpdateSportAreaRequest {
 
 export interface UpdateSportAreaResponse {
   name: string;
-  imageURL: string;
+  image: string[];
   shower: boolean;
   carPark: boolean;
   sportType: string[];

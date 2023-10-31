@@ -1,6 +1,6 @@
 export interface Sportarea {
   name: string;
-  imageURL: string;
+  image: string[];
   shower: boolean;
   carPark: boolean;
   sportType: string;

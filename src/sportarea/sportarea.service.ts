@@ -80,7 +80,7 @@ export class SportareaService implements OnModuleInit {
     const updateSportArea: UpdateSportAreaRequest = {
       id: sportAreaId,
       name: requestBody.name,
-      imageURL: requestBody.imageURL,
+      image: requestBody.image,
       shower: requestBody.shower,
       carPark: requestBody.carPark,
       sportType: requestBody.sportType,

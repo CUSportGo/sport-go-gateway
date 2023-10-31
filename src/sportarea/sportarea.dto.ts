@@ -15,7 +15,7 @@ export class UpdateSportAreaRequestBody {
 
   @IsOptional()
   @IsUrl()
-  imageURL?: string;
+  image?: string[];
 
   shower?: boolean;
 
@@ -54,7 +54,7 @@ export class SearchSportAreaQuery {
 export class SportAreaResponse {
   id: string;
   name: string;
-  imageURL: string;
+  image: string[];
   shower: boolean;
   carPark: boolean;
   sportType: string[];
