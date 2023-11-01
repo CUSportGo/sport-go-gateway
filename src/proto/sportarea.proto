@@ -12,7 +12,7 @@ service SportareaService {
 
 message CreateSportareaRequest {
   string name =1;
-  string imageURL =2;
+  repeated string image =2;
   bool shower =3;
   bool carPark =4;
   repeated string sportType =5;
@@ -26,7 +26,7 @@ message CreateSportareaRequest {
 
 message CreateSportareaResponse {
   string name =1;
-  string imageURL =2;
+  repeated string image =2;
   bool shower =3;
   bool carPark =4;
   repeated string sportType =5;
@@ -52,7 +52,7 @@ message SearchSportAreaResponse {
 message SearchSportAreaItem {
   string id = 1;
   string name = 2;
-  string imageURL = 3;
+  repeated string image = 3;
   repeated string sportType = 4;
   string location = 5;
   string description = 6;
@@ -76,7 +76,7 @@ message AddSportAreaResponse{
 message SportArea {
   string id = 1;
   string name = 2;
-  string imageURL = 3;
+  repeated string image = 3;
   repeated string sportType = 4;
   string location = 5;
   string description = 6;
@@ -90,6 +90,7 @@ message SportList {
 }
 
 message SportDetail {
+  string id = 1;
   string name = 2;
   string openTime = 3;
   string closeTime = 4;
@@ -101,12 +102,25 @@ message GetSportAreaByIdRequest {
 }
 
 message GetSportAreaByIdResponse {
-  SportArea data = 1;
+  GetSportAreaByIdItem data = 1;
+}
+
+message GetSportAreaByIdItem {
+  string id = 1;
+  string name = 2;
+  repeated string image = 3;
+  bool shower = 4;
+  bool carPark = 5;
+  repeated string sportType = 6;
+  string location = 7;
+  string description = 8;
+  string price = 9;
+  repeated SportList sportList = 10;
 }
 
 message UpdateSportAreaRequest {
   string name =1;
-  string imageURL =2;
+  repeated string image =2;
   bool shower =3;
   bool carPark =4;
   repeated string sportType =5;
@@ -121,7 +135,7 @@ message UpdateSportAreaRequest {
 
 message UpdateSportAreaResponse {
   string name =1;
-  string imageURL =2;
+  repeated string image =2;
   bool shower =3;
   bool carPark =4;
   repeated string sportType =5;
