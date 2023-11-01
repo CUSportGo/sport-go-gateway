@@ -84,6 +84,7 @@ export interface SportList {
 }
 
 export interface SportDetail {
+  id: string;
   name: string;
   openTime: string;
   closeTime: string;
