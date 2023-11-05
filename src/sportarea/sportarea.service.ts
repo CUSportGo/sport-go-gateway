@@ -14,6 +14,7 @@ import { catchError, firstValueFrom, map, Subject } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
 import { UpdateSportAreaRequestBody } from './sportarea.dto';
 import {
+  AddSportAreaRequest,
   CreateSportareaRequest,
   CreateSportareaResponse,
   GetSportAreaByIdRequest,
@@ -100,7 +101,7 @@ export class SportareaService implements OnModuleInit {
     const updateSportArea: UpdateSportAreaRequest = {
       id: sportAreaId,
       name: requestBody.name,
-      imageURL: requestBody.imageURL,
+      image: requestBody.image,
       shower: requestBody.shower,
       carPark: requestBody.carPark,
       sportType: requestBody.sportType,
@@ -114,6 +115,18 @@ export class SportareaService implements OnModuleInit {
 
     return await firstValueFrom(
       this.sportareaClient.updateSportArea(updateSportArea).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
+  }
+
+  async addSportArea(req: AddSportAreaRequest) {
+    return await firstValueFrom(
+      this.sportareaClient.addSportArea(req).pipe(
         catchError((error) => {
           this.logger.error(error);
           const exception = exceptionHandler.getExceptionFromGrpc(error);

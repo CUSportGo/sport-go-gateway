@@ -6,7 +6,7 @@ export const protobufPackage = 'sportarea';
 
 export interface CreateSportareaRequest {
   name: string;
-  imageURL: string;
+  image: string[];
   shower: boolean;
   carPark: boolean;
   sportType: string[];
@@ -20,7 +20,7 @@ export interface CreateSportareaRequest {
 
 export interface CreateSportareaResponse {
   name: string;
-  imageURL: string;
+  image: string[];
   shower: boolean;
   carPark: boolean;
   sportType: string[];
@@ -46,7 +46,7 @@ export interface SearchSportAreaResponse {
 export interface SearchSportAreaItem {
   id: string;
   name: string;
-  imageURL: string;
+  image: string[];
   sportType: string[];
   location: string;
   description: string;
@@ -84,7 +84,7 @@ export interface UpdateAreaResponse {
 export interface SportArea {
   id: string;
   name: string;
-  imageURL: string;
+  image: string[];
   sportType: string[];
   location: string;
   description: string;
@@ -98,6 +98,7 @@ export interface SportList {
 }
 
 export interface SportDetail {
+  id: string;
   name: string;
   openTime: string;
   closeTime: string;
@@ -109,11 +110,24 @@ export interface GetSportAreaByIdRequest {
 }
 
 export interface GetSportAreaByIdResponse {
-  data: SportArea | undefined;
+  data: GetSportAreaByIdItem | undefined;
+}
+
+export interface GetSportAreaByIdItem {
+  id: string;
+  name: string;
+  image: string[];
+  shower: boolean;
+  carPark: boolean;
+  sportType: string[];
+  location: string;
+  description: string;
+  price: string;
+  sportList: SportList[];
 }
 export interface UpdateSportAreaRequest {
   name: string;
-  imageURL: string;
+  image: string[];
   shower: boolean;
   carPark: boolean;
   sportType: string[];
@@ -128,7 +142,7 @@ export interface UpdateSportAreaRequest {
 
 export interface UpdateSportAreaResponse {
   name: string;
-  imageURL: string;
+  image: string[];
   shower: boolean;
   carPark: boolean;
   sportType: string[];

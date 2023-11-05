@@ -9,6 +9,7 @@ import {
   Req,
 } from '@nestjs/common';
 import {
+  AddSportAreaRequest,
   CreateSportareaRequest,
   GetSportAreaByIdRequest,
   SearchSportAreaRequest,
@@ -88,5 +89,14 @@ export class SportareaController {
   ) {
     const userId = request.userId;
     return this.sportareaService.updateSportArea(body, sportAreaId, userId);
+  }
+
+  @Patch(':id/area')
+  addSportArea(@Param('id') sportAreaId: string, @Req() request: any) {
+    const req: AddSportAreaRequest = {
+      ...request.body,
+      id: sportAreaId,
+    };
+    return this.sportareaService.addSportArea(req);
   }
 }
