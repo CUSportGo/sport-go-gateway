@@ -13,7 +13,6 @@ import {
   CreateSportareaRequest,
   GetSportAreaByIdRequest,
   SearchSportAreaRequest,
-  UpdateAreaRequest,
   UpdateAreaResponse,
 } from './sportarea.pb';
 import { SportareaService } from './sportarea.service';
@@ -28,6 +27,7 @@ import {
 import {
   SearchSportAreaQuery,
   SportAreaResponse,
+  UpdateAreaRequest,
   UpdateSportAreaRequestBody,
 } from './sportarea.dto';
 import { SportTypeEnum } from '../model/enum/sportType.enum';
