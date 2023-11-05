@@ -42,7 +42,7 @@ import { BookingService } from './booking/booking.service';
     AdminModule,
     UserModule,
     SportareaModule,
-    BookingModule
+    BookingModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthService],

@@ -5,7 +5,7 @@ import { GetAvailableBookingRequest } from './booking.pb';
 
 @Controller('booking')
 export class BookingController {
-  constructor(private bookingService: BookingService) { }
+  constructor(private bookingService: BookingService) {}
 
   @Post()
   createBooking(
