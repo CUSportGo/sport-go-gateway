@@ -12,7 +12,7 @@ import { Response } from 'express';
 import { request } from 'http';
 import { catchError, firstValueFrom, map, Subject } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
-import { UpdateSportAreaRequestBody } from './sportarea.dto';
+import { UpdateSportAreaRequestBody, UpdateAreaRequest } from './sportarea.dto';
 import {
   AddSportAreaRequest,
   CreateSportareaRequest,
@@ -22,7 +22,6 @@ import {
   SearchSportAreaRequest,
   SearchSportAreaResponse,
   SportareaServiceClient,
-  UpdateAreaRequest,
   UpdateAreaResponse,
   UpdateSportAreaRequest,
 } from './sportarea.pb';

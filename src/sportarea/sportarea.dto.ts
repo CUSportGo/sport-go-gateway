@@ -1,11 +1,3 @@
-import {
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
-  ValidationArguments,
-  ValidationOptions,
-  registerDecorator,
-} from 'class-validator';
-
 import { ApiParam, ApiProperty, ApiQuery } from '@nestjs/swagger';
 import {
   IsArray,
@@ -15,34 +7,9 @@ import {
   IsOptional,
   IsPositive,
   IsUrl,
+  IsMilitaryTime,
 } from 'class-validator';
 import { SportTypeEnum } from '../model/enum/sportType.enum';
-
-@ValidatorConstraint({ name: 'timeFormat', async: false })
-export class IsTimeFormat implements ValidatorConstraintInterface {
-  validate(time: string, args: ValidationArguments) {
-    // Regular expression to match "hh:mm" format
-    const regex = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
-
-    return regex.test(time);
-  }
-
-  defaultMessage(args: ValidationArguments) {
-    return `${args.property} must be in time format (hh:mm)`;
-  }
-}
-
-export function TimeFormat(validationOptions?: ValidationOptions) {
-  return function (object: object, propertyName: string) {
-    registerDecorator({
-      target: object.constructor,
-      propertyName: propertyName,
-      options: validationOptions,
-      constraints: [],
-      validator: IsTimeFormat,
-    });
-  };
-}
 
 export class UpdateAreaRequest {
   timeField: string;
@@ -50,9 +17,9 @@ export class UpdateAreaRequest {
   sportType: string;
   areaId: string;
   name: string;
-  @TimeFormat()
+  @IsMilitaryTime()
   openTime: string;
-  @TimeFormat()
+  @IsMilitaryTime()
   closeTime: string;
   price: string;
 }
