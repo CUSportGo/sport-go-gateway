@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Req,
+} from '@nestjs/common';
 import {
   CreateSportareaRequest,
   GetSportAreaByIdRequest,
@@ -8,8 +17,22 @@ import {
 } from './sportarea.pb';
 import { SportareaService } from './sportarea.service';
 import { Request } from 'express';
+import {
+  ApiBody,
+  ApiOkResponse,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  SearchSportAreaQuery,
+  SportAreaResponse,
+  UpdateSportAreaRequestBody,
+} from './sportarea.dto';
+import { SportTypeEnum } from '../model/enum/sportType.enum';
 
 @Controller('sportarea')
+@ApiTags('sportarea')
 export class SportareaController {
   constructor(private sportareaService: SportareaService) {}
 
@@ -25,25 +48,25 @@ export class SportareaController {
   }
 
   @Get()
-  searchSportArea(
-    @Query('type') type: string[],
-    @Query('location') location: string,
-    @Query('maxDistance') maxDistance: number,
-    @Query('latitude') latitude: number,
-    @Query('longitude') longtitude: number,
-    @Query('date') date: string,
-    @Query('startTime') startTime: string,
-    @Query('endTime') endTime: string,
-  ) {
+  @ApiQuery({
+    name: 'type',
+    enum: SportTypeEnum,
+    isArray: true,
+    required: false,
+  })
+  searchSportArea(@Query() query: SearchSportAreaQuery, @Query('type') type) {
+    let sportType = [];
+    if (type || type instanceof String) {
+      sportType.push(type);
+    } else {
+      sportType = type;
+    }
     const request: SearchSportAreaRequest = {
-      sportType: type,
-      location: location,
-      maxDistance: maxDistance,
-      userLatitude: latitude,
-      userLongitude: longtitude,
-      date: date,
-      startTime: startTime,
-      endTime: endTime,
+      sportType: sportType,
+      keyword: query.keyword || '',
+      maxDistance: query.maxDistance || 10,
+      userLatitude: query.latitude,
+      userLongitude: query.longitude,
     };
     return this.sportareaService.searchSportArea(request);
   }
@@ -51,5 +74,19 @@ export class SportareaController {
   @Post('/updateAreaInfo')
   updateAreaInfo(@Body() req: UpdateAreaRequest): Promise<UpdateAreaResponse> {
     return this.sportareaService.updateAreaInfo(req);
+  }
+
+  @Patch(':id')
+  @ApiOkResponse({
+    description: 'Update sport area successfully',
+    type: SportAreaResponse,
+  })
+  updateSportArea(
+    @Param('id') sportAreaId: string,
+    @Body() body: UpdateSportAreaRequestBody,
+    @Req() request: any,
+  ) {
+    const userId = request.userId;
+    return this.sportareaService.updateSportArea(body, sportAreaId, userId);
   }
 }
