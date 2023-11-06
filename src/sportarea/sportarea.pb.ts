@@ -12,7 +12,7 @@ export interface CreateSportareaRequest {
   sportType: string[];
   location: string;
   latitude: number;
-  longtitude: number;
+  longitude: number;
   description: string;
   price: number;
   userId: string;
@@ -26,7 +26,7 @@ export interface CreateSportareaResponse {
   sportType: string[];
   location: string;
   latitude: number;
-  longtitude: number;
+  longitude: number;
   description: string;
   price: number;
 }
@@ -120,7 +120,7 @@ export interface UpdateSportAreaRequest {
   sportType: string[];
   location: string;
   latitude: number;
-  longtitude: number;
+  longitude: number;
   description: string;
   price: number;
   id: string;
@@ -135,7 +135,7 @@ export interface UpdateSportAreaResponse {
   sportType: string[];
   location: string;
   latitude: number;
-  longtitude: number;
+  longitude: number;
   description: string;
   price: number;
   id: string;

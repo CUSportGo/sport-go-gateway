@@ -6,7 +6,7 @@ export interface Sportarea {
   sportType: string;
   location: string;
   latitude: number;
-  longtitude: number;
+  longitude: number;
   description: string;
   price: number;
 }
