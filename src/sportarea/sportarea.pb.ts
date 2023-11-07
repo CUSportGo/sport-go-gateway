@@ -1,12 +1,13 @@
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
+import { ImageData } from "./file.pb";
 
 export const protobufPackage = "sportarea";
 
 export interface CreateSportareaRequest {
   name: string;
-  image: string[];
+  image: ImageData[];
   shower: boolean;
   carPark: boolean;
   sportType: string[];
