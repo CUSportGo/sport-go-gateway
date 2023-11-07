@@ -1,19 +1,30 @@
 import { HttpService } from '@nestjs/axios';
 import {
+  Inject,
   Injectable,
   Logger,
+  OnModuleInit,
   ServiceUnavailableException,
 } from '@nestjs/common';
 import { AxiosError, AxiosResponse } from 'axios';
 import { catchError, firstValueFrom } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
 import { User } from '../model/user.dto';
+import { GetUserProfileRequest, GetUserProfileResponse, UserServiceClient } from './user.pb';
+import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
-export class UserService {
-  constructor(private readonly httpService: HttpService) {}
+export class UserService implements OnModuleInit {
+  constructor(private readonly httpService: HttpService,
+    @Inject('USER_PACKAGE') private client: ClientGrpc) { }
   private readonly logger = new Logger(UserService.name);
   private readonly baseURL = process.env.USER_SERVICE_URL;
+  private userClient: UserServiceClient;
+
+  onModuleInit() {
+    this.userClient =
+      this.client.getService<UserServiceClient>('UserService');
+  }
 
   async getAllUsers() {
     const requestURL = this.baseURL + '/user';
@@ -34,4 +45,20 @@ export class UserService {
     );
     return response.data;
   }
+
+
+  async getUserProfile(req: GetUserProfileRequest): Promise<GetUserProfileResponse> {
+    return await firstValueFrom(
+      this.userClient.getUserProfile(req).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
+  }
+
+
+
 }

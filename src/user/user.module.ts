@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { HttpModule } from '@nestjs/axios';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -9,8 +11,19 @@ import { HttpModule } from '@nestjs/axios';
       timeout: 5000,
       maxRedirects: 5,
     }),
+    ClientsModule.register([
+      {
+        name: 'USER_PACKAGE',
+        transport: Transport.GRPC,
+        options: {
+          package: 'user',
+          protoPath: join(__dirname, '../proto/user.proto'),
+          url: 'localhost:8087',
+        },
+      },
+    ]),
   ],
   controllers: [UserController],
   providers: [UserService],
 })
-export class UserModule {}
+export class UserModule { }
