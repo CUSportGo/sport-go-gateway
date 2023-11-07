@@ -1,5 +1,12 @@
-import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  Logger,
+  OnModuleInit,
+} from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
+import { request } from 'http';
 import { catchError, firstValueFrom } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
 import { ImageData } from './file.pb';
@@ -35,6 +42,17 @@ export class SportareaService implements OnModuleInit {
     userId: string,
     files: Express.Multer.File[],
   ): Promise<CreateSportareaResponse> {
+    if (body.shower != 'true' && body.shower != 'false') {
+      throw new BadRequestException('Invalid request body');
+    }
+    if (body.carPark != 'true' && body.carPark != 'false') {
+      throw new BadRequestException('Invalid request body');
+    }
+    const price = parseFloat(body.price);
+    if (price < 0) {
+      throw new BadRequestException('Invalid request body');
+    }
+
     let images: ImageData[] = [];
     files.forEach((file: Express.Multer.File) => {
       const image: ImageData = {
@@ -44,9 +62,17 @@ export class SportareaService implements OnModuleInit {
       images.push(image);
     });
     const request: CreateSportareaRequest = {
-      ...body,
-      userId: userId,
+      name: body.name,
       image: images,
+      shower: Boolean(body.shower),
+      carPark: Boolean(body.carPark),
+      sportType: body.sportType,
+      location: body.location,
+      latitude: parseFloat(body.latitude),
+      longitude: parseFloat(body.longitude),
+      description: body.description,
+      price: price,
+      userId: userId,
     };
     return await firstValueFrom(
       this.sportareaClient.create(request).pipe(

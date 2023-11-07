@@ -36,7 +36,7 @@ export class SportareaController {
   constructor(private sportareaService: SportareaService) {}
 
   @Post()
-  @UseInterceptors(FilesInterceptor('file'))
+  @UseInterceptors(FilesInterceptor('files'))
   create(
     @Body() body: CreateSportareaRequestDto,
     @Req() request: any,
@@ -47,8 +47,18 @@ export class SportareaController {
     )
     files: Express.Multer.File[],
   ) {
+    let sportType = [];
+    if (body.sportType || body.sportType instanceof String) {
+      sportType.push(body.sportType);
+    } else {
+      sportType = body.sportType;
+    }
     const userId = request.userId;
-    return this.sportareaService.create(body, userId, files);
+    return this.sportareaService.create(
+      { ...body, sportType: sportType },
+      userId,
+      files,
+    );
   }
 
   @Get(':id')
