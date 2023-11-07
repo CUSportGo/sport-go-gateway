@@ -87,7 +87,7 @@ export class SportareaService implements OnModuleInit {
       sportType: requestBody.sportType,
       location: requestBody.location,
       latitude: requestBody.latitude,
-      longtitude: requestBody.longitude,
+      longitude: requestBody.longitude,
       description: requestBody.description,
       price: requestBody.price,
       userId: userId,
