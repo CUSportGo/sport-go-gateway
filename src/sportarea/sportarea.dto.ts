@@ -64,3 +64,15 @@ export class SportAreaResponse {
   description: string;
   price: number;
 }
+
+export interface CreateSportareaRequestDto {
+  name: string;
+  shower: boolean;
+  carPark: boolean;
+  sportType: string[];
+  location: string;
+  latitude: number;
+  longitude: number;
+  description: string;
+  price: number;
+}

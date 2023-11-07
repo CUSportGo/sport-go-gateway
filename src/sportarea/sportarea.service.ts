@@ -1,17 +1,12 @@
-import {
-  Inject,
-  Injectable,
-  Logger,
-  OnModuleInit,
-  UnauthorizedException,
-} from '@nestjs/common';
-
+import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { Response } from 'express';
-import { request } from 'http';
-import { catchError, firstValueFrom, map, Subject } from 'rxjs';
+import { catchError, firstValueFrom } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
-import { UpdateSportAreaRequestBody } from './sportarea.dto';
+import { ImageData } from './file.pb';
+import {
+  CreateSportareaRequestDto,
+  UpdateSportAreaRequestBody,
+} from './sportarea.dto';
 import {
   AddSportAreaRequest,
   CreateSportareaRequest,
@@ -19,10 +14,10 @@ import {
   GetSportAreaByIdRequest,
   GetSportAreaByIdResponse,
   SearchSportAreaRequest,
-  SearchSportAreaResponse,
   SportareaServiceClient,
   UpdateSportAreaRequest,
 } from './sportarea.pb';
+
 @Injectable()
 export class SportareaService implements OnModuleInit {
   private sportareaClient: SportareaServiceClient;
@@ -35,9 +30,26 @@ export class SportareaService implements OnModuleInit {
       this.client.getService<SportareaServiceClient>('SportareaService');
   }
 
-  async create(req: CreateSportareaRequest): Promise<CreateSportareaResponse> {
+  async create(
+    body: CreateSportareaRequestDto,
+    userId: string,
+    files: Express.Multer.File[],
+  ): Promise<CreateSportareaResponse> {
+    let images: ImageData[] = [];
+    files.forEach((file: Express.Multer.File) => {
+      const image: ImageData = {
+        filename: file.originalname,
+        data: file.buffer,
+      };
+      images.push(image);
+    });
+    const request: CreateSportareaRequest = {
+      ...body,
+      userId: userId,
+      image: images,
+    };
     return await firstValueFrom(
-      this.sportareaClient.create(req).pipe(
+      this.sportareaClient.create(request).pipe(
         catchError((error) => {
           this.logger.error(error);
           const exception = exceptionHandler.getExceptionFromGrpc(error);
