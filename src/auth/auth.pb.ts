@@ -11,6 +11,8 @@ export interface RegisterRequest {
   phoneNumber: string;
   password: string;
   role: string;
+  imageName: string;
+  imageData: Uint8Array;
 }
 
 export interface RegisterResponse {
@@ -18,6 +20,7 @@ export interface RegisterResponse {
   lastName: string;
   email: string;
   phoneNumber: string;
+  imageURL: string;
 }
 
 export interface Credential {
