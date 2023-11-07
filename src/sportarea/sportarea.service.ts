@@ -52,7 +52,6 @@ export class SportareaService implements OnModuleInit {
     if (price < 0) {
       throw new BadRequestException('Invalid request body');
     }
-
     let images: ImageData[] = [];
     files.forEach((file: Express.Multer.File) => {
       const image: ImageData = {
@@ -64,8 +63,8 @@ export class SportareaService implements OnModuleInit {
     const request: CreateSportareaRequest = {
       name: body.name,
       image: images,
-      shower: Boolean(body.shower),
-      carPark: Boolean(body.carPark),
+      shower: body.shower == 'true' ? true : false,
+      carPark: body.carPark == 'true' ? true : false,
       sportType: body.sportType,
       location: body.location,
       latitude: parseFloat(body.latitude),
@@ -74,6 +73,7 @@ export class SportareaService implements OnModuleInit {
       price: price,
       userId: userId,
     };
+    console.log(request);
     return await firstValueFrom(
       this.sportareaClient.create(request).pipe(
         catchError((error) => {
