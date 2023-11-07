@@ -2,27 +2,29 @@ import {
   Body,
   Controller,
   Get,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   Post,
   Put,
   Req,
   Res,
   SetMetadata,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Request, Response, response } from 'express';
 import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
 import {
   ForgotPasswordRequest,
-  LogoutRequest,
   OAuthUser,
   ResetPasswordRequest,
   ValidateOAuthRequest,
 } from './auth.pb';
 import { AuthService } from './auth.service';
-import { Roles } from './guard/role.decorator';
-import { RoleGuard } from './guard/role.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -33,8 +35,17 @@ export class AuthController {
     return this.authService.login(req, response);
   }
   @Post('register')
-  register(@Body() req: RegisterRequestDto) {
-    return this.authService.register(req);
+  @UseInterceptors(FileInterceptor('file'))
+  register(
+    @Body() req: RegisterRequestDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new MaxFileSizeValidator({ maxSize: 20000000 })],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
+    return this.authService.register(req, file.originalname, file.buffer);
   }
 
   @Get('google/redirect')
