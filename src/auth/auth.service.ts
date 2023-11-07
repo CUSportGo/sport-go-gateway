@@ -86,7 +86,6 @@ export class AuthService implements OnModuleInit {
       imageName: filename,
       imageData: fileBuffer,
     };
-    console.log(request);
     return await firstValueFrom(
       this.authClient.register(request).pipe(
         catchError((error) => {
