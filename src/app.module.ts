@@ -42,7 +42,7 @@ import { BookingService } from './booking/booking.service';
     AdminModule,
     UserModule,
     SportareaModule,
-    BookingModule
+    BookingModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthService],
@@ -51,7 +51,7 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .exclude('auth/login', 'auth/register')
+      .exclude('auth/login', 'auth/register', 'auth/refreshToken')
       .forRoutes(
         AuthController,
         AdminController,
