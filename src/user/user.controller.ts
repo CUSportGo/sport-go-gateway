@@ -10,8 +10,8 @@ export class UserController {
     return this.userService.getAllUsers();
   }
 
-  @Get(':id')
-  getUserProfile(@Param('id') userId: string) {
-    return this.userService.getUserProfile({ userId: userId });
+  @Get(':accessToken')
+  getUserProfile(@Param('accessToken') accessToken: string) {
+    return this.userService.getUserProfile({ accessToken: accessToken });
   }
 }

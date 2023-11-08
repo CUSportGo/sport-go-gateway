@@ -18,7 +18,7 @@ message GetUserSportAreaResponse {
 
 
 message GetUserProfileRequest {
-  string userId = 1;
+  string access_token = 1;
 }
 
 
@@ -29,4 +29,6 @@ message GetUserProfileResponse {
   string email = 4;
   string photoURL = 5;
   string role = 6;
+  string sportAreaId = 7;
+
 }

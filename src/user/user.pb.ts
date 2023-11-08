@@ -14,7 +14,7 @@ export interface GetUserSportAreaResponse {
 }
 
 export interface GetUserProfileRequest {
-  userId: string;
+  accessToken: string;
 }
 
 export interface GetUserProfileResponse {
@@ -24,6 +24,7 @@ export interface GetUserProfileResponse {
   email: string;
   photoURL: string;
   role: string;
+  sportAreaId: string;
 }
 
 export const USER_PACKAGE_NAME = "user";
