@@ -17,6 +17,7 @@ import {
   AuthServiceClient,
   ForgotPasswordRequest,
   LogoutRequest,
+  RegisterRequest,
   ResetPasswordRequest,
   ValidateOAuthRequest,
 } from './auth.pb';
@@ -75,9 +76,18 @@ export class AuthService implements OnModuleInit {
     response.status(301).redirect('http://localhost:3000');
   }
 
-  async register(req: RegisterRequestDto) {
+  async register(
+    req: RegisterRequestDto,
+    filename: string,
+    fileBuffer: Buffer,
+  ) {
+    const request: RegisterRequest = {
+      ...req,
+      imageName: filename,
+      imageData: fileBuffer,
+    };
     return await firstValueFrom(
-      this.authClient.register(req).pipe(
+      this.authClient.register(request).pipe(
         catchError((error) => {
           this.logger.error(error);
           const exception = exceptionHandler.getExceptionFromGrpc(error);

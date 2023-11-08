@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package sportarea;
 
+import "file.proto";
+
 service SportareaService {
   rpc Create(CreateSportareaRequest) returns (CreateSportareaResponse) {}
   rpc SearchSportArea(SearchSportAreaRequest) returns (SearchSportAreaResponse) {}
@@ -14,13 +16,13 @@ service SportareaService {
 
 message CreateSportareaRequest {
   string name =1;
-  repeated string image =2;
+  repeated file.ImageData image =2;
   bool shower =3;
   bool carPark =4;
   repeated string sportType =5;
   string location  =6 ;
   float latitude  =7 ;
-  float longtitude = 8;
+  float longitude = 8;
   string description = 9;
   int32 price = 10;
   string userId= 11;
@@ -34,7 +36,7 @@ message CreateSportareaResponse {
   repeated string sportType =5;
   string location  =6 ;
   float latitude  =7 ;
-  float longtitude = 8;
+  float longitude = 8;
   string description = 9;
   int32 price = 10;
 }
@@ -153,7 +155,7 @@ message UpdateSportAreaRequest {
   repeated string sportType =5;
   string location  =6 ;
   float latitude  =7 ;
-  float longtitude = 8;
+  float longitude = 8;
   string description = 9;
   int32 price = 10;
   string id = 11;
@@ -168,7 +170,7 @@ message UpdateSportAreaResponse {
   repeated string sportType =5;
   string location  =6 ;
   float latitude  =7 ;
-  float longtitude = 8;
+  float longitude = 8;
   string description = 9;
   int32 price = 10;
   string id = 11;

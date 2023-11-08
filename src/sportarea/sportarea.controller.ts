@@ -2,11 +2,15 @@ import {
   Body,
   Controller,
   Get,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   Patch,
   Post,
   Query,
   Req,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   AddSportAreaRequest,
@@ -15,8 +19,8 @@ import {
   SearchSportAreaRequest,
   UpdateAreaResponse,
 } from './sportarea.pb';
+
 import { SportareaService } from './sportarea.service';
-import { Request } from 'express';
 import {
   ApiBody,
   ApiOkResponse,
@@ -25,12 +29,14 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import {
+  CreateSportareaRequestDto,
   SearchSportAreaQuery,
   SportAreaResponse,
   UpdateAreaRequest,
   UpdateSportAreaRequestBody,
 } from './sportarea.dto';
 import { SportTypeEnum } from '../model/enum/sportType.enum';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('sportarea')
 @ApiTags('sportarea')
@@ -38,9 +44,29 @@ export class SportareaController {
   constructor(private sportareaService: SportareaService) {}
 
   @Post()
-  create(@Req() request) {
-    const createReq = { ...request.body, userId: request.userId };
-    return this.sportareaService.create(createReq);
+  @UseInterceptors(FilesInterceptor('files'))
+  create(
+    @Body() body: CreateSportareaRequestDto,
+    @Req() request: any,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [new MaxFileSizeValidator({ maxSize: 20000000 })],
+      }),
+    )
+    files: Express.Multer.File[],
+  ) {
+    let sportType = [];
+    if (body.sportType || body.sportType instanceof String) {
+      sportType.push(body.sportType);
+    } else {
+      sportType = body.sportType;
+    }
+    const userId = request.userId;
+    return this.sportareaService.create(
+      { ...body, sportType: sportType },
+      userId,
+      files,
+    );
   }
 
   @Get(':id')

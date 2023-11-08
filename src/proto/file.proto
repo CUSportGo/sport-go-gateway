@@ -7,6 +7,16 @@ service FileService {
   rpc GetSignedURL(GetSignedURLRequest) returns (GetSignedURLResponse) {}
 }
 
+message ImageData {
+  string filename = 1;
+  bytes data = 2;
+}
+
+message ImageURL {
+  string url = 1;
+  string filename = 2;
+}
+
 message UploadFileRequest {
   string filename = 1;
   bytes data = 2;

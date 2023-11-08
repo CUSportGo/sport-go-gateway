@@ -51,7 +51,7 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .exclude('auth/login', 'auth/register')
+      .exclude('auth/login', 'auth/register', 'auth/refreshToken')
       .forRoutes(
         AuthController,
         AdminController,

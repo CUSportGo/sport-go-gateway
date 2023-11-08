@@ -1,9 +1,11 @@
 import { ApiParam, ApiProperty, ApiQuery } from '@nestjs/swagger';
 import {
   IsArray,
+  IsBoolean,
   IsEnum,
   IsLatitude,
   IsLongitude,
+  IsNumberString,
   IsOptional,
   IsPositive,
   IsUrl,
@@ -77,4 +79,19 @@ export class SportAreaResponse {
   longitude: number;
   description: string;
   price: number;
+}
+
+export class CreateSportareaRequestDto {
+  name: string;
+  shower: string;
+  carPark: string;
+  sportType: string[];
+  location: string;
+  @IsLatitude()
+  latitude: string;
+  @IsLongitude()
+  longitude: string;
+  description: string;
+  @IsNumberString()
+  price: string;
 }

@@ -1,18 +1,21 @@
 /* eslint-disable */
-import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
+
+import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
+import { Observable } from "rxjs";
+import { ImageData } from "./file.pb";
+
 
 export const protobufPackage = 'sportarea';
 
 export interface CreateSportareaRequest {
   name: string;
-  image: string[];
+  image: ImageData[];
   shower: boolean;
   carPark: boolean;
   sportType: string[];
   location: string;
   latitude: number;
-  longtitude: number;
+  longitude: number;
   description: string;
   price: number;
   userId: string;
@@ -26,7 +29,7 @@ export interface CreateSportareaResponse {
   sportType: string[];
   location: string;
   latitude: number;
-  longtitude: number;
+  longitude: number;
   description: string;
   price: number;
 }
@@ -133,7 +136,7 @@ export interface UpdateSportAreaRequest {
   sportType: string[];
   location: string;
   latitude: number;
-  longtitude: number;
+  longitude: number;
   description: string;
   price: number;
   id: string;
@@ -148,7 +151,7 @@ export interface UpdateSportAreaResponse {
   sportType: string[];
   location: string;
   latitude: number;
-  longtitude: number;
+  longitude: number;
   description: string;
   price: number;
   id: string;

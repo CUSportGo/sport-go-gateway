@@ -4,15 +4,18 @@ import {
   Injectable,
   Logger,
   OnModuleInit,
-  UnauthorizedException,
 } from '@nestjs/common';
-
 import { ClientGrpc } from '@nestjs/microservices';
-import { Response } from 'express';
 import { request } from 'http';
-import { catchError, firstValueFrom, map, Subject } from 'rxjs';
+import { catchError, firstValueFrom } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
-import { UpdateSportAreaRequestBody, UpdateAreaRequest } from './sportarea.dto';
+
+import { ImageData } from './file.pb';
+import {
+  CreateSportareaRequestDto,
+  UpdateSportAreaRequestBody,
+  UpdateAreaRequest,
+} from './sportarea.dto';
 import {
   AddSportAreaRequest,
   CreateSportareaRequest,
@@ -20,11 +23,11 @@ import {
   GetSportAreaByIdRequest,
   GetSportAreaByIdResponse,
   SearchSportAreaRequest,
-  SearchSportAreaResponse,
   SportareaServiceClient,
   UpdateAreaResponse,
   UpdateSportAreaRequest,
 } from './sportarea.pb';
+
 @Injectable()
 export class SportareaService implements OnModuleInit {
   private sportareaClient: SportareaServiceClient;
@@ -37,9 +40,45 @@ export class SportareaService implements OnModuleInit {
       this.client.getService<SportareaServiceClient>('SportareaService');
   }
 
-  async create(req: CreateSportareaRequest): Promise<CreateSportareaResponse> {
+  async create(
+    body: CreateSportareaRequestDto,
+    userId: string,
+    files: Express.Multer.File[],
+  ): Promise<CreateSportareaResponse> {
+    if (body.shower != 'true' && body.shower != 'false') {
+      throw new BadRequestException('Invalid request body');
+    }
+    if (body.carPark != 'true' && body.carPark != 'false') {
+      throw new BadRequestException('Invalid request body');
+    }
+    const price = parseFloat(body.price);
+    if (price < 0) {
+      throw new BadRequestException('Invalid request body');
+    }
+    let images: ImageData[] = [];
+    files.forEach((file: Express.Multer.File) => {
+      const image: ImageData = {
+        filename: file.originalname,
+        data: file.buffer,
+      };
+      images.push(image);
+    });
+    const request: CreateSportareaRequest = {
+      name: body.name,
+      image: images,
+      shower: body.shower == 'true' ? true : false,
+      carPark: body.carPark == 'true' ? true : false,
+      sportType: body.sportType,
+      location: body.location,
+      latitude: parseFloat(body.latitude),
+      longitude: parseFloat(body.longitude),
+      description: body.description,
+      price: price,
+      userId: userId,
+    };
+    console.log(request);
     return await firstValueFrom(
-      this.sportareaClient.create(req).pipe(
+      this.sportareaClient.create(request).pipe(
         catchError((error) => {
           this.logger.error(error);
           const exception = exceptionHandler.getExceptionFromGrpc(error);
@@ -101,7 +140,7 @@ export class SportareaService implements OnModuleInit {
       sportType: requestBody.sportType,
       location: requestBody.location,
       latitude: requestBody.latitude,
-      longtitude: requestBody.longitude,
+      longitude: requestBody.longitude,
       description: requestBody.description,
       price: requestBody.price,
       userId: userId,
