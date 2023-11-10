@@ -12,7 +12,14 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { AddSportAreaRequest, SearchSportAreaRequest } from './sportarea.pb';
+import {
+  AddSportAreaRequest,
+  CreateSportareaRequest,
+  GetSportAreaByIdRequest,
+  SearchSportAreaRequest,
+  UpdateAreaResponse,
+} from './sportarea.pb';
+
 import { SportareaService } from './sportarea.service';
 import {
   ApiBody,
@@ -25,6 +32,7 @@ import {
   CreateSportareaRequestDto,
   SearchSportAreaQuery,
   SportAreaResponse,
+  UpdateAreaRequest,
   UpdateSportAreaRequestBody,
 } from './sportarea.dto';
 import { SportTypeEnum } from '../model/enum/sportType.enum';
@@ -88,6 +96,11 @@ export class SportareaController {
       userLongitude: query.longitude,
     };
     return this.sportareaService.searchSportArea(request);
+  }
+
+  @Post('/updateAreaInfo')
+  updateAreaInfo(@Body() req: UpdateAreaRequest): Promise<UpdateAreaResponse> {
+    return this.sportareaService.updateAreaInfo(req);
   }
 
   @Patch(':id')
