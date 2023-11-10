@@ -3,102 +3,102 @@ syntax = "proto3";
 package auth;
 
 service AuthService {
-  rpc Login(LoginRequest) returns (LoginResponse) {}
-  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
-  rpc Register(RegisterRequest) returns (RegisterResponse) {}
-  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
-  rpc ValidateOAuth(ValidateOAuthRequest) returns (LoginResponse) {}
-  rpc Logout(LogoutRequest) returns (LogoutResponse) {}
-  rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse) {}
-  rpc ForgotPassword(ForgotPasswordRequest) returns (ForgotPasswordResponse) {}
+	rpc Login(LoginRequest) returns (LoginResponse) {}
+	rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
+	rpc Register(RegisterRequest) returns (RegisterResponse) {}
+	rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
+	rpc ValidateOAuth(ValidateOAuthRequest) returns (LoginResponse) {}
+	rpc Logout(LogoutRequest) returns (LogoutResponse) {}
+	rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse) {}
+	rpc ForgotPassword(ForgotPasswordRequest) returns (ForgotPasswordResponse) {}
 }
 
 message RegisterRequest {
-  string firstName = 1;
-  string lastName = 2;
-  string email = 3;
-  string phoneNumber = 4;
-  string password = 5;
-  string role = 6 ;
-  string imageName = 7;
-  bytes imageData = 8;
+	string firstName = 1;
+	string lastName = 2;
+	string email = 3;
+	string phoneNumber = 4;
+	string password = 5;
+	string role = 6 ;
+	string imageName = 7;
+	bytes imageData = 8;
 }
 
 message RegisterResponse {
-  string firstName = 1;
-  string lastName = 2;
-  string email = 3;
-  string phoneNumber = 4;
-  string imageURL = 5;
+	string firstName = 1;
+	string lastName = 2;
+	string email = 3;
+	string phoneNumber = 4;
+	string imageURL = 5;
 }
 
 message Credential {
-  string access_token = 1;
-  string refresh_token = 2;
-  int32 access_token_expires_in = 3;
-  int32 refresh_token_expires_in = 4;
+	string access_token = 1;
+	string refresh_token = 2;
+	int32 access_token_expires_in = 3;
+	int32 refresh_token_expires_in = 4;
 }
 
 message OAuthUser {
-  string id = 1;
-  string firstName = 2;
-  string lastName = 3;
-  string email = 4;
-  string photoURL = 5;
+	string id = 1;
+	string firstName = 2;
+	string lastName = 3;
+	string email = 4;
+	string photoURL = 5;
 }
 
 message LoginRequest {
-  string email = 1;
-  string password = 2;
+	string email = 1;
+	string password = 2;
 }
 
 message LoginResponse {
-  Credential credential = 1;
+	Credential credential = 1;
 }
 
 message RefreshTokenRequest {
-  string refreshToken = 1;
+	string refreshToken = 1;
 }
 
 message RefreshTokenResponse {
-  string newAccessToken = 1;
-  int32 accessTokenExpiresIn = 2;
+	string newAccessToken = 1;
+	int32 accessTokenExpiresIn = 2;
 }
 
 message ValidateOAuthRequest {
-  OAuthUser user = 1;
-  string type = 2;
+	OAuthUser user = 1;
+	string type = 2;
 }
 
 message LogoutRequest {
-  string accessToken = 1;
+	string accessToken = 1;
 }
 
 message ResetPasswordRequest {
-  string access_token = 1;
-  string password = 2;
+	string access_token = 1;
+	string password = 2;
 }
 
 message ResetPasswordResponse {
-  bool is_done = 1;
+	bool is_done = 1;
 }
 message LogoutResponse {
-  bool is_done = 1;
+	bool is_done = 1;
 }
 
 message ForgotPasswordRequest {
-  string email = 1;
+	string email = 1;
 }
 
 message ForgotPasswordResponse {
-  string reset_password_url = 1;
+	string reset_password_url = 1;
 }
 
 message ValidateTokenRequest {
-  string token = 1;
+	string token = 1;
 }
 
 message ValidateTokenResponse {
-  string userId =1;
-  string role = 2;
+	string userId =1;
+	string role = 2;
 }

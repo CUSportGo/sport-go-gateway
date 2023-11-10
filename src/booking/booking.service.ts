@@ -9,7 +9,7 @@ import {
 import { ClientGrpc, ClientProxy } from '@nestjs/microservices';
 import { CANCEL_BOOKING_PATTERN, CONFIRM_BOOKING_PATTERN, CREATE_BOOKING_PATTERN } from '../constant/booking.constant';
 import { BookingInfo, CreateBookingRequestBody } from './booking.dto';
-import { BookingServiceClient, GetAvailableBookingRequest, GetAvailableBookingResponse } from './booking.pb';
+import { BookingServiceClient, GetAvailableBookingRequest, GetAvailableBookingResponse, ViewBookingHistoryRequest, ViewBookingHistoryResponse } from './booking.pb';
 import { catchError, firstValueFrom } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
 
@@ -77,6 +77,18 @@ export class BookingService {
   async getAvailableBooking(request: GetAvailableBookingRequest): Promise<GetAvailableBookingResponse> {
     return await firstValueFrom(
       this.bookingClient.getAvailableBooking(request).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
+  }
+
+  async viewBookingHistory(request: ViewBookingHistoryRequest): Promise<ViewBookingHistoryResponse> {
+    return await firstValueFrom(
+      this.bookingClient.viewBookingHistory(request).pipe(
         catchError((error) => {
           this.logger.error(error);
           const exception = exceptionHandler.getExceptionFromGrpc(error);
