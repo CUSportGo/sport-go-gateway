@@ -124,6 +124,8 @@ export interface GetSportAreaByIdItem {
   carPark: boolean;
   sportType: string[];
   location: string;
+  latitude: number;
+  longitude: number;
   description: string;
   price: string;
   sportList: SportList[];

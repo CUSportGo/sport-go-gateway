@@ -132,9 +132,11 @@ message GetSportAreaByIdItem {
   bool carPark = 5;
   repeated string sportType = 6;
   string location = 7;
-  string description = 8;
-  string price = 9;
-  repeated SportList sportList = 10;
+  float latitude  =8 ;
+  float longitude = 9;
+  string description = 10;
+  string price = 11;
+  repeated SportList sportList = 12;
 }
 
 message GetAreaByIdRequest {
