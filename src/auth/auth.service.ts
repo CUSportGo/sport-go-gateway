@@ -73,7 +73,7 @@ export class AuthService implements OnModuleInit {
 
     response.cookie('accessToken', credential.credential.accessToken);
     response.cookie('refreshToken', credential.credential.refreshToken);
-    response.status(301).redirect('http://localhost:3000');
+    response.status(301).redirect(process.env.FRONTEND_BASEURL);
   }
 
   async register(
