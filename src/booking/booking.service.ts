@@ -7,9 +7,17 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ClientGrpc, ClientProxy } from '@nestjs/microservices';
-import { CANCEL_BOOKING_PATTERN, CONFIRM_BOOKING_PATTERN, CREATE_BOOKING_PATTERN } from '../constant/booking.constant';
+import {
+  CANCEL_BOOKING_PATTERN,
+  CONFIRM_BOOKING_PATTERN,
+  CREATE_BOOKING_PATTERN,
+} from '../constant/booking.constant';
 import { BookingInfo, CreateBookingRequestBody } from './booking.dto';
-import { BookingServiceClient, GetAvailableBookingRequest, GetAvailableBookingResponse } from './booking.pb';
+import {
+  BookingServiceClient,
+  GetAvailableBookingRequest,
+  GetAvailableBookingResponse,
+} from './booking.pb';
 import { catchError, firstValueFrom } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
 
@@ -18,10 +26,14 @@ export class BookingService {
   private bookingClient: BookingServiceClient;
   private readonly logger = new Logger(BookingService.name);
 
-  constructor(@Inject('BOOKING_RMQ_PACKAGE') private rmqClient: ClientProxy, @Inject('BOOKING_PACKAGE') private client: ClientGrpc) { }
+  constructor(
+    @Inject('BOOKING_RMQ_PACKAGE') private rmqClient: ClientProxy,
+    @Inject('BOOKING_PACKAGE') private client: ClientGrpc,
+  ) {}
 
   onModuleInit() {
-    this.bookingClient = this.client.getService<BookingServiceClient>('BookingService');
+    this.bookingClient =
+      this.client.getService<BookingServiceClient>('BookingService');
   }
 
   public async createBooking(
@@ -74,7 +86,9 @@ export class BookingService {
     }
   }
 
-  async getAvailableBooking(request: GetAvailableBookingRequest): Promise<GetAvailableBookingResponse> {
+  async getAvailableBooking(
+    request: GetAvailableBookingRequest,
+  ): Promise<GetAvailableBookingResponse> {
     return await firstValueFrom(
       this.bookingClient.getAvailableBooking(request).pipe(
         catchError((error) => {
@@ -85,5 +99,4 @@ export class BookingService {
       ),
     );
   }
-
 }

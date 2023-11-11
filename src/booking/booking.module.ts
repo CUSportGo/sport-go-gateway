@@ -32,4 +32,4 @@ import { join } from 'path';
   controllers: [BookingController],
   providers: [BookingService],
 })
-export class BookingModule { }
+export class BookingModule {}
