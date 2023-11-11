@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -10,8 +10,6 @@ export class UserController {
     return this.userService.getAllUsers();
   }
 
-  @Get(':accessToken')
-  getUserProfile(@Param('accessToken') accessToken: string) {
-    return this.userService.getUserProfile({ accessToken: accessToken });
-  }
+  @Get("/userProfile")
+  getUserProfile()
 }

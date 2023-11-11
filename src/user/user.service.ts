@@ -13,18 +13,20 @@ import { User } from '../model/user.dto';
 import { GetUserProfileRequest, GetUserProfileResponse, UserServiceClient } from './user.pb';
 import { ClientGrpc } from '@nestjs/microservices';
 
+
 @Injectable()
-export class UserService implements OnModuleInit {
+export class UserService {
   constructor(private readonly httpService: HttpService,
-    @Inject('USER_PACKAGE') private client: ClientGrpc) { }
+    @Inject('USER_PACKAGE') private client: ClientGrpc) {
+    this.userClient = this.client.getService<UserServiceClient>('UserService');
+
+  }
   private readonly logger = new Logger(UserService.name);
   private readonly baseURL = process.env.USER_SERVICE_URL;
   private userClient: UserServiceClient;
 
-  onModuleInit() {
-    this.userClient =
-      this.client.getService<UserServiceClient>('UserService');
-  }
+
+
 
   async getAllUsers() {
     const requestURL = this.baseURL + '/user';
@@ -46,19 +48,14 @@ export class UserService implements OnModuleInit {
     return response.data;
   }
 
-
-  async getUserProfile(req: GetUserProfileRequest): Promise<GetUserProfileResponse> {
+  async getUserProfile(request: GetUserProfileRequest): Promise<GetUserProfileResponse> {
     return await firstValueFrom(
-      this.userClient.getUserProfile(req).pipe(
+      this.userClient.getUserProfile(request).pipe(
         catchError((error) => {
           this.logger.error(error);
-          const exception = exceptionHandler.getExceptionFromGrpc(error);
-          throw exception;
+          throw error;
         }),
       ),
     );
   }
-
-
-
 }
