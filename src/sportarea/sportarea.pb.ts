@@ -1,11 +1,9 @@
 /* eslint-disable */
-
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 import { ImageData } from "./file.pb";
 
-
-export const protobufPackage = 'sportarea';
+export const protobufPackage = "sportarea";
 
 export interface CreateSportareaRequest {
   name: string;
@@ -130,6 +128,17 @@ export interface GetSportAreaByIdItem {
   price: string;
   sportList: SportList[];
 }
+
+export interface GetAreaByIdRequest {
+  sportAreaId: string;
+  sportType: string;
+  areaId: string;
+}
+
+export interface GetAreaByIdResponse {
+  data: SportDetail | undefined;
+}
+
 export interface UpdateSportAreaRequest {
   name: string;
   image: string[];
@@ -159,34 +168,18 @@ export interface UpdateSportAreaResponse {
   id: string;
 }
 
-export interface GetAreaByIdRequest {
-  sportAreaId: string;
-  sportType: string;
-  areaId: string;
-}
-
-export interface GetAreaByIdResponse {
-  data: SportDetail | undefined;
-}
-
-export const SPORTAREA_PACKAGE_NAME = 'sportarea';
+export const SPORTAREA_PACKAGE_NAME = "sportarea";
 
 export interface SportareaServiceClient {
   create(request: CreateSportareaRequest): Observable<CreateSportareaResponse>;
 
-  searchSportArea(
-    request: SearchSportAreaRequest,
-  ): Observable<SearchSportAreaResponse>;
+  searchSportArea(request: SearchSportAreaRequest): Observable<SearchSportAreaResponse>;
 
   addSportArea(request: AddSportAreaRequest): Observable<AddSportAreaResponse>;
 
-  getSportAreaById(
-    request: GetSportAreaByIdRequest,
-  ): Observable<GetSportAreaByIdResponse>;
+  getSportAreaById(request: GetSportAreaByIdRequest): Observable<GetSportAreaByIdResponse>;
 
-  updateSportArea(
-    request: UpdateSportAreaRequest,
-  ): Observable<UpdateSportAreaResponse>;
+  updateSportArea(request: UpdateSportAreaRequest): Observable<UpdateSportAreaResponse>;
 
   getAreaById(request: GetAreaByIdRequest): Observable<GetAreaByIdResponse>;
 
@@ -196,89 +189,54 @@ export interface SportareaServiceClient {
 export interface SportareaServiceController {
   create(
     request: CreateSportareaRequest,
-  ):
-    | Promise<CreateSportareaResponse>
-    | Observable<CreateSportareaResponse>
-    | CreateSportareaResponse;
+  ): Promise<CreateSportareaResponse> | Observable<CreateSportareaResponse> | CreateSportareaResponse;
 
   searchSportArea(
     request: SearchSportAreaRequest,
-  ):
-    | Promise<SearchSportAreaResponse>
-    | Observable<SearchSportAreaResponse>
-    | SearchSportAreaResponse;
+  ): Promise<SearchSportAreaResponse> | Observable<SearchSportAreaResponse> | SearchSportAreaResponse;
 
   addSportArea(
     request: AddSportAreaRequest,
-  ):
-    | Promise<AddSportAreaResponse>
-    | Observable<AddSportAreaResponse>
-    | AddSportAreaResponse;
+  ): Promise<AddSportAreaResponse> | Observable<AddSportAreaResponse> | AddSportAreaResponse;
 
   getSportAreaById(
     request: GetSportAreaByIdRequest,
-  ):
-    | Promise<GetSportAreaByIdResponse>
-    | Observable<GetSportAreaByIdResponse>
-    | GetSportAreaByIdResponse;
+  ): Promise<GetSportAreaByIdResponse> | Observable<GetSportAreaByIdResponse> | GetSportAreaByIdResponse;
 
   updateSportArea(
     request: UpdateSportAreaRequest,
-  ):
-    | Promise<UpdateSportAreaResponse>
-    | Observable<UpdateSportAreaResponse>
-    | UpdateSportAreaResponse;
+  ): Promise<UpdateSportAreaResponse> | Observable<UpdateSportAreaResponse> | UpdateSportAreaResponse;
 
   getAreaById(
     request: GetAreaByIdRequest,
-  ):
-    | Promise<GetAreaByIdResponse>
-    | Observable<GetAreaByIdResponse>
-    | GetAreaByIdResponse;
+  ): Promise<GetAreaByIdResponse> | Observable<GetAreaByIdResponse> | GetAreaByIdResponse;
 
   updateArea(
     request: UpdateAreaRequest,
-  ):
-    | Promise<UpdateAreaResponse>
-    | Observable<UpdateAreaResponse>
-    | UpdateAreaResponse;
+  ): Promise<UpdateAreaResponse> | Observable<UpdateAreaResponse> | UpdateAreaResponse;
 }
 
 export function SportareaServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = [
-      'create',
-      'searchSportArea',
-      'addSportArea',
-      'getSportAreaById',
-      'updateSportArea',
-      'getAreaById',
-      'updateArea',
+      "create",
+      "searchSportArea",
+      "addSportArea",
+      "getSportAreaById",
+      "updateSportArea",
+      "getAreaById",
+      "updateArea",
     ];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(
-        constructor.prototype,
-        method,
-      );
-      GrpcMethod('SportareaService', method)(
-        constructor.prototype[method],
-        method,
-        descriptor,
-      );
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcMethod("SportareaService", method)(constructor.prototype[method], method, descriptor);
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(
-        constructor.prototype,
-        method,
-      );
-      GrpcStreamMethod('SportareaService', method)(
-        constructor.prototype[method],
-        method,
-        descriptor,
-      );
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcStreamMethod("SportareaService", method)(constructor.prototype[method], method, descriptor);
     }
   };
 }
 
-export const SPORTAREA_SERVICE_NAME = 'SportareaService';
+export const SPORTAREA_SERVICE_NAME = "SportareaService";

@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -11,5 +11,7 @@ export class UserController {
   }
 
   @Get("/userProfile")
-  getUserProfile()
+  getUserProfile(@Req() request: any) {
+    return this.userService.getUserProfile({ userId: request.userId })
+  }
 }
