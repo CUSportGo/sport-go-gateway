@@ -9,10 +9,12 @@ import { ClientGrpc } from '@nestjs/microservices';
 import { request } from 'http';
 import { catchError, firstValueFrom } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
+
 import { ImageData } from './file.pb';
 import {
   CreateSportareaRequestDto,
   UpdateSportAreaRequestBody,
+  UpdateAreaRequest,
 } from './sportarea.dto';
 import {
   AddSportAreaRequest,
@@ -22,6 +24,7 @@ import {
   GetSportAreaByIdResponse,
   SearchSportAreaRequest,
   SportareaServiceClient,
+  UpdateAreaResponse,
   UpdateSportAreaRequest,
 } from './sportarea.pb';
 
@@ -102,6 +105,18 @@ export class SportareaService implements OnModuleInit {
   async searchSportArea(request: SearchSportAreaRequest) {
     return await firstValueFrom(
       this.sportareaClient.searchSportArea(request).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
+  }
+
+  async updateAreaInfo(req: UpdateAreaRequest): Promise<UpdateAreaResponse> {
+    return await firstValueFrom(
+      this.sportareaClient.updateArea(req).pipe(
         catchError((error) => {
           this.logger.error(error);
           const exception = exceptionHandler.getExceptionFromGrpc(error);
