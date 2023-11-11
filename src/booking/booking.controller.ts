@@ -35,8 +35,8 @@ export class BookingController {
 		return this.bookingService.confirmBooking(bookingId, userId);
 	}
 
-	@Get('viewBookingHistory/:userId')
-	viewBookingHistory(@Param() request: ViewBookingHistoryRequest) {
-		return this.bookingService.viewBookingHistory(request)
+	@Get('viewBookingHistory')
+	viewBookingHistory(@Req() request: any) {
+		return this.bookingService.viewBookingHistory({ userId: request.userId })
 	}
 }
