@@ -18,7 +18,7 @@ import { join } from 'path';
         options: {
           package: 'user',
           protoPath: join(__dirname, '../proto/user.proto'),
-          url: 'localhost:8087',
+          url: process.env.USER_GRPC_URL,
         },
       },
     ]),
