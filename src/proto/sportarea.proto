@@ -5,76 +5,76 @@ package sportarea;
 import "file.proto";
 
 service SportareaService {
-  rpc Create(CreateSportareaRequest) returns (CreateSportareaResponse) {}
-  rpc SearchSportArea(SearchSportAreaRequest) returns (SearchSportAreaResponse) {}
-  rpc AddSportArea(AddSportAreaRequest) returns (AddSportAreaResponse) {}
-  rpc getSportAreaById(GetSportAreaByIdRequest) returns (GetSportAreaByIdResponse) {}
-  rpc UpdateSportArea(UpdateSportAreaRequest) returns (UpdateSportAreaResponse) {}
+	rpc Create(CreateSportareaRequest) returns (CreateSportareaResponse) {}
+	rpc SearchSportArea(SearchSportAreaRequest) returns (SearchSportAreaResponse) {}
+	rpc AddSportArea(AddSportAreaRequest) returns (AddSportAreaResponse) {}
+	rpc getSportAreaById(GetSportAreaByIdRequest) returns (GetSportAreaByIdResponse) {}
+	rpc UpdateSportArea(UpdateSportAreaRequest) returns (UpdateSportAreaResponse) {}
   rpc getAreaById(GetAreaByIdRequest) returns (GetAreaByIdResponse) {}
   rpc updateArea(UpdateAreaRequest) returns (UpdateAreaResponse) {}
 }
 
 message CreateSportareaRequest {
-  string name =1;
-  repeated file.ImageData image =2;
-  bool shower =3;
-  bool carPark =4;
-  repeated string sportType =5;
-  string location  =6 ;
-  float latitude  =7 ;
-  float longitude = 8;
-  string description = 9;
-  int32 price = 10;
-  string userId= 11;
+	string name =1;
+	repeated file.ImageData image =2;
+	bool shower =3;
+	bool carPark =4;
+	repeated string sportType =5;
+	string location  =6 ;
+	float latitude  =7 ;
+	float longitude = 8;
+	string description = 9;
+	int32 price = 10;
+	string userId= 11;
 }
 
 message CreateSportareaResponse {
-  string name =1;
-  repeated string image =2;
-  bool shower =3;
-  bool carPark =4;
-  repeated string sportType =5;
-  string location  =6 ;
-  float latitude  =7 ;
-  float longitude = 8;
-  string description = 9;
-  int32 price = 10;
+	string name =1;
+	repeated string image =2;
+	bool shower =3;
+	bool carPark =4;
+	repeated string sportType =5;
+	string location  =6 ;
+	float latitude  =7 ;
+	float longitude = 8;
+	string description = 9;
+	int32 price = 10;
 }
 
 message SearchSportAreaRequest {
-  repeated string sportType = 1;
-  string keyword = 2;
-  float userLatitude = 3;
-  float userLongitude = 4;
-  int32 maxDistance = 5;
+	repeated string sportType = 1;
+	string keyword = 2;
+	float userLatitude = 3;
+	float userLongitude = 4;
+	int32 maxDistance = 5;
 }
 
 message SearchSportAreaResponse {
-  repeated SearchSportAreaItem data = 1;
+	repeated SearchSportAreaItem data = 1;
 }
 
 message SearchSportAreaItem {
-  string id = 1;
-  string name = 2;
-  repeated string image = 3;
-  repeated string sportType = 4;
-  string location = 5;
-  string description = 6;
-  float distance = 7;
-  string price = 8;
+	string id = 1;
+	string name = 2;
+	repeated string image = 3;
+	repeated string sportType = 4;
+	string location = 5;
+	string description = 6;
+	float distance = 7;
+	string price = 8;
 }
 
 message AddSportAreaRequest{
-  string id = 1;
-  string sportType = 2;
-  string name = 3;
-  string openTime = 4;
-  string closeTime = 5;
-  string price = 6;
+	string id = 1;
+	string sportType = 2;
+	string name = 3;
+	string openTime = 4;
+	string closeTime = 5;
+	string price = 6;
 }
 
 message AddSportAreaResponse{
-  SportArea data = 1;
+	SportArea data = 1;
 }
 
 message UpdateAreaRequest{
@@ -93,50 +93,50 @@ message UpdateAreaResponse{
 
 
 message SportArea {
-  string id = 1;
-  string name = 2;
-  repeated string image = 3;
-  repeated string sportType = 4;
-  string location = 5;
-  string description = 6;
-  string price = 7;
-  repeated SportList sportList = 8;
+	string id = 1;
+	string name = 2;
+	repeated string image = 3;
+	repeated string sportType = 4;
+	string location = 5;
+	string description = 6;
+	string price = 7;
+	repeated SportList sportList = 8;
 }
 
 message SportList {
-  string sportType = 1;
-  repeated SportDetail area = 2;
+	string sportType = 1;
+	repeated SportDetail area = 2;
 }
 
 message SportDetail {
-  string id = 1;
-  string name = 2;
-  string openTime = 3;
-  string closeTime = 4;
-  string price = 5;
+	string id = 1;
+	string name = 2;
+	string openTime = 3;
+	string closeTime = 4;
+	string price = 5;
 }
 
 message GetSportAreaByIdRequest {
-  string id = 1;
+	string id = 1;
 }
 
 message GetSportAreaByIdResponse {
-  GetSportAreaByIdItem data = 1;
+	GetSportAreaByIdItem data = 1;
 }
 
 message GetSportAreaByIdItem {
-  string id = 1;
-  string name = 2;
-  repeated string image = 3;
-  bool shower = 4;
-  bool carPark = 5;
-  repeated string sportType = 6;
-  string location = 7;
+	string id = 1;
+	string name = 2;
+	repeated string image = 3;
+	bool shower = 4;
+	bool carPark = 5;
+	repeated string sportType = 6;
+	string location = 7;
   float latitude  =8 ;
   float longitude = 9;
-  string description = 10;
-  string price = 11;
-  repeated SportList sportList = 12;
+	string description = 10;
+	string price = 11;
+	repeated SportList sportList = 12;
 }
 
 message GetAreaByIdRequest {
@@ -150,30 +150,30 @@ message GetAreaByIdResponse {
 }
 
 message UpdateSportAreaRequest {
-  string name =1;
-  repeated string image =2;
-  bool shower =3;
-  bool carPark =4;
-  repeated string sportType =5;
-  string location  =6 ;
-  float latitude  =7 ;
-  float longitude = 8;
-  string description = 9;
-  int32 price = 10;
-  string id = 11;
-  string userId = 12;
+	string name =1;
+	repeated string image =2;
+	bool shower =3;
+	bool carPark =4;
+	repeated string sportType =5;
+	string location  =6 ;
+	float latitude  =7 ;
+	float longitude = 8;
+	string description = 9;
+	int32 price = 10;
+	string id = 11;
+	string userId = 12;
 }
 
 message UpdateSportAreaResponse {
-  string name =1;
-  repeated string image =2;
-  bool shower =3;
-  bool carPark =4;
-  repeated string sportType =5;
-  string location  =6 ;
-  float latitude  =7 ;
-  float longitude = 8;
-  string description = 9;
-  int32 price = 10;
-  string id = 11;
+	string name =1;
+	repeated string image =2;
+	bool shower =3;
+	bool carPark =4;
+	repeated string sportType =5;
+	string location  =6 ;
+	float latitude  =7 ;
+	float longitude = 8;
+	string description = 9;
+	int32 price = 10;
+	string id = 11;
 }

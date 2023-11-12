@@ -16,7 +16,7 @@ import { BookingInfo, CreateBookingRequestBody } from './booking.dto';
 import {
   BookingServiceClient,
   GetAvailableBookingRequest,
-  GetAvailableBookingResponse,
+  GetAvailableBookingResponse, ViewBookingHistoryRequest, ViewBookingHistoryResponse,
 } from './booking.pb';
 import { catchError, firstValueFrom } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
@@ -29,7 +29,7 @@ export class BookingService {
   constructor(
     @Inject('BOOKING_RMQ_PACKAGE') private rmqClient: ClientProxy,
     @Inject('BOOKING_PACKAGE') private client: ClientGrpc,
-  ) {}
+  ) { }
 
   onModuleInit() {
     this.bookingClient =
@@ -99,4 +99,16 @@ export class BookingService {
       ),
     );
   }
+  async viewBookingHistory(request: ViewBookingHistoryRequest): Promise<ViewBookingHistoryResponse> {
+    return await firstValueFrom(
+      this.bookingClient.viewBookingHistory(request).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
+  }
+
 }
