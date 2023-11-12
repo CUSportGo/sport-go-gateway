@@ -7,6 +7,10 @@ describe('UserService', () => {
   const mockHttpService = {
     get: jest.fn(),
   };
+  const mockClientGrpc = {
+    getService: jest.fn(),
+    getClientByServiceName: jest.fn(),
+  };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -15,6 +19,10 @@ describe('UserService', () => {
           provide: HttpService,
           useValue: mockHttpService,
         },
+        {
+          provide: "USER_PACKAGE",
+          useValue: mockClientGrpc,
+        }
       ],
     }).compile();
 
