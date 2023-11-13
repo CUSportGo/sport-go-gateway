@@ -40,8 +40,8 @@ export class BookingController {
     return this.bookingService.viewBookingHistory({ userId: request.userId })
   }
 
-  @Get('pending/:id')
-  getPendingBooking(@Req() request: GetPendingBookingRequest) {
+  @Get('pending')
+  getPendingBooking(@Body() request: GetPendingBookingRequest) {
     return this.bookingService.getPendingBooking(request);
   }
 }
