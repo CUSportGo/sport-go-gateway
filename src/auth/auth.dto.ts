@@ -1,3 +1,12 @@
+import {
+  IsDefined,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+} from 'class-validator';
+import { UserType } from '../types/enum/userType.enum';
+
 export class LoginRequestDto {
   email: string;
   password: string;
@@ -8,11 +17,28 @@ export class LoginResponseDto {
 }
 
 export class RegisterRequestDto {
+  @IsNotEmpty()
+  @IsString()
   firstName: string;
+
+  @IsNotEmpty()
+  @IsString()
   lastName: string;
+
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
+
+  @IsNotEmpty()
+  @IsString()
   phoneNumber: string;
+
+  @IsNotEmpty()
+  @IsEnum(UserType)
   role: string;
+
+  @IsNotEmpty()
+  @IsString()
   password: string;
 }
 
