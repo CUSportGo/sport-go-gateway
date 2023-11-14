@@ -53,6 +53,7 @@ export interface BookingTransaction {
   endAt: string;
   status: BookingStatus;
   sportAreaData: SportArea | undefined;
+  areaName: string;
 }
 
 export interface SportArea {
@@ -62,12 +63,22 @@ export interface SportArea {
   description: string;
 }
 
+export interface GetPendingBookingRequest {
+  SportAreaId: string;
+}
+
+export interface GetPendingBookingResponse {
+  data: BookingTransaction[];
+}
+
 export const BOOKING_PACKAGE_NAME = "booking";
 
 export interface BookingServiceClient {
   getAvailableBooking(request: GetAvailableBookingRequest): Observable<GetAvailableBookingResponse>;
 
   viewBookingHistory(request: ViewBookingHistoryRequest): Observable<ViewBookingHistoryResponse>;
+
+  getPendingBooking(request: GetPendingBookingRequest): Observable<GetPendingBookingResponse>;
 }
 
 export interface BookingServiceController {
@@ -78,11 +89,15 @@ export interface BookingServiceController {
   viewBookingHistory(
     request: ViewBookingHistoryRequest,
   ): Promise<ViewBookingHistoryResponse> | Observable<ViewBookingHistoryResponse> | ViewBookingHistoryResponse;
+
+  getPendingBooking(
+    request: GetPendingBookingRequest,
+  ): Promise<GetPendingBookingResponse> | Observable<GetPendingBookingResponse> | GetPendingBookingResponse;
 }
 
 export function BookingServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["getAvailableBooking", "viewBookingHistory"];
+    const grpcMethods: string[] = ["getAvailableBooking", "viewBookingHistory", "getPendingBooking"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("BookingService", method)(constructor.prototype[method], method, descriptor);

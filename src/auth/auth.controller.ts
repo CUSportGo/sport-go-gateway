@@ -16,6 +16,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
 import { Request, Response, response } from 'express';
 import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
 import {
@@ -27,6 +28,7 @@ import {
 import { AuthService } from './auth.service';
 
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -47,6 +49,10 @@ export class AuthController {
   ) {
     return this.authService.register(req, file.originalname, file.buffer);
   }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  googleLogin() {}
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))

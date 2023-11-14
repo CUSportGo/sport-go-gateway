@@ -5,6 +5,7 @@ package booking;
 service BookingService {
   rpc GetAvailableBooking(GetAvailableBookingRequest) returns (GetAvailableBookingResponse) {}
   rpc ViewBookingHistory(ViewBookingHistoryRequest) returns (ViewBookingHistoryResponse) {}
+   rpc GetPendingBooking(GetPendingBookingRequest) returns (GetPendingBookingResponse) {}
 }
 
 message TimeSlot {
@@ -26,6 +27,18 @@ message GetAvailableBookingResponse{
 
 message ViewBookingHistoryRequest {
   string userId = 1;
+}
+
+
+message ViewBookingHistoryResponse {
+  BookingData data = 1;
+}
+
+message BookingData {
+  repeated BookingTransaction pending = 1;
+  repeated BookingTransaction accept = 2;
+  repeated BookingTransaction decline = 3;
+  repeated BookingTransaction cancel = 4;
 }
 
 message BookingTransaction {
@@ -54,4 +67,12 @@ message SportArea {
   string name = 2;
   repeated string image = 3;
   string description = 4;
+}
+
+message GetPendingBookingRequest {
+    string SportAreaId = 1;
+}
+
+message GetPendingBookingResponse {
+     repeated BookingTransaction data = 1;
 }
