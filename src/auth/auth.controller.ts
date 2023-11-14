@@ -48,6 +48,10 @@ export class AuthController {
     return this.authService.register(req, file.originalname, file.buffer);
   }
 
+  @Get()
+  @UseGuards(AuthGuard('google'))
+  googleLogin() {}
+
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
   googleAuthRediect(@Req() request: Request, @Res() response: Response) {
