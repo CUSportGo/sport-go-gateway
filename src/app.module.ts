@@ -49,7 +49,17 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .exclude('auth/login', 'auth/register', 'auth/refreshToken')
+      .exclude(
+        'auth/login',
+        'auth/register',
+        'auth/refreshToken',
+        'auth/google',
+        'auth/facebook',
+        'auth/google/redirect',
+        'auth/facebook/redirect',
+        'auth/resetPassword',
+        'auth/forgotPassword',
+      )
       .forRoutes(
         AuthController,
         AdminController,
