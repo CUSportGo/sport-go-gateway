@@ -35,6 +35,13 @@ export class BookingController {
     return this.bookingService.confirmBooking(bookingId, userId);
   }
 
+  @Post('decline/:id')
+  declineBooking(@Req() request: any) {
+    const bookingId = request.params.id;
+    const userId = request.userId;
+    return this.bookingService.declineBooking(bookingId, userId);
+  }
+
   @Get('viewBookingHistory')
   viewBookingHistory(@Req() request: any) {
     return this.bookingService.viewBookingHistory({ userId: request.userId })

@@ -11,6 +11,7 @@ import {
   CANCEL_BOOKING_PATTERN,
   CONFIRM_BOOKING_PATTERN,
   CREATE_BOOKING_PATTERN,
+  DECLINE_BOOKING_PATTERN,
 } from '../constant/booking.constant';
 import { BookingInfo, CreateBookingRequestBody } from './booking.dto';
 import {
@@ -88,6 +89,19 @@ export class BookingService {
     }
   }
 
+  public async declineBooking(bookingId: string, userId: string) {
+    try {
+      const declineBooking = { bookingID: bookingId, userID: userId };
+      this.rmqClient.emit(DECLINE_BOOKING_PATTERN, declineBooking);
+      return { isSuccess: true };
+    } catch (error) {
+      this.logger.error(error);
+      if (!(error instanceof HttpException)) {
+        throw new InternalServerErrorException('Internal server error');
+      }
+      throw error;
+    }
+  }
   async getAvailableBooking(
     request: GetAvailableBookingRequest,
   ): Promise<GetAvailableBookingResponse> {
