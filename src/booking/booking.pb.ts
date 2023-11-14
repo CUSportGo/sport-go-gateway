@@ -53,12 +53,13 @@ export interface BookingTransaction {
   endAt: string;
   status: BookingStatus;
   sportAreaData: SportArea | undefined;
+  areaName: string;
 }
 
 export interface SportArea {
   id: string;
   name: string;
-  imageURL: string;
+  image: string[];
   description: string;
 }
 
