@@ -1,11 +1,15 @@
 import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { CreateBookingRequestBody } from './booking.dto';
 import { BookingService } from './booking.service';
-import { GetAvailableBookingRequest, ViewBookingHistoryRequest, GetPendingBookingRequest } from './booking.pb';
+import {
+  GetAvailableBookingRequest,
+  ViewBookingHistoryRequest,
+  GetPendingBookingRequest,
+} from './booking.pb';
 
 @Controller('booking')
 export class BookingController {
-  constructor(private bookingService: BookingService) { }
+  constructor(private bookingService: BookingService) {}
 
   @Post()
   createBooking(
@@ -44,11 +48,11 @@ export class BookingController {
 
   @Get('viewBookingHistory')
   viewBookingHistory(@Req() request: any) {
-    return this.bookingService.viewBookingHistory({ userId: request.userId })
+    return this.bookingService.viewBookingHistory({ userId: request.userId });
   }
 
-  @Get('pending')
-  getPendingBooking(@Body() request: GetPendingBookingRequest) {
+  @Get('pending/:SportAreaId')
+  getPendingBooking(@Param() request: GetPendingBookingRequest) {
     return this.bookingService.getPendingBooking(request);
   }
 }
