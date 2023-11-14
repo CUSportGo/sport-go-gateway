@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Inject,
   Injectable,
@@ -6,12 +7,11 @@ import {
   OnModuleInit,
   UnauthorizedException,
 } from '@nestjs/common';
-
 import { ClientGrpc } from '@nestjs/microservices';
-import { resolveSoa } from 'dns';
 import { Request, Response } from 'express';
 import { catchError, firstValueFrom, map } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
+import { authUtils } from '../utils/auth.utils';
 import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
 import {
   AuthServiceClient,
@@ -81,6 +81,10 @@ export class AuthService implements OnModuleInit {
     filename: string,
     fileBuffer: Buffer,
   ) {
+    // check password and phoneFormat
+    authUtils.validatePassword(req.password);
+    authUtils.validatePhoneFormat(req.phoneNumber);
+
     const request: RegisterRequest = {
       ...req,
       imageName: filename,
