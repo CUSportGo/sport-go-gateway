@@ -130,6 +130,8 @@ export class AuthService implements OnModuleInit {
   }
 
   async resetPassword(req: ResetPasswordRequest) {
+    authUtils.validatePassword(req.password);
+
     return await firstValueFrom(
       this.authClient.resetPassword(req).pipe(
         catchError((error) => {
