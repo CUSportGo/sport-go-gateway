@@ -56,7 +56,7 @@ export class SportareaController {
     files: Express.Multer.File[],
   ) {
     let sportType = [];
-    if (body.sportType || body.sportType instanceof String) {
+    if (body.sportType && body.sportType instanceof String) {
       sportType.push(body.sportType);
     } else {
       sportType = body.sportType;
