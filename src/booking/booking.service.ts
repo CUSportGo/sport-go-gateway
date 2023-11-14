@@ -17,6 +17,8 @@ import {
   BookingServiceClient,
   GetAvailableBookingRequest,
   GetAvailableBookingResponse, ViewBookingHistoryRequest, ViewBookingHistoryResponse,
+  GetPendingBookingRequest,
+  GetPendingBookingResponse,
 } from './booking.pb';
 import { catchError, firstValueFrom } from 'rxjs';
 import { exceptionHandler } from '../common/exception-handler';
@@ -111,4 +113,18 @@ export class BookingService {
     );
   }
 
+
+  async getPendingBooking(
+    request: GetPendingBookingRequest,
+  ): Promise<GetPendingBookingResponse> {
+    return await firstValueFrom(
+      this.bookingClient.getPendingBooking(request).pipe(
+        catchError((error) => {
+          this.logger.error(error);
+          const exception = exceptionHandler.getExceptionFromGrpc(error);
+          throw exception;
+        }),
+      ),
+    );
+  }
 }
