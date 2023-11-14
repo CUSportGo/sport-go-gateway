@@ -29,6 +29,7 @@ message ViewBookingHistoryRequest {
   string userId = 1;
 }
 
+
 message ViewBookingHistoryResponse {
   BookingData data = 1;
 }
