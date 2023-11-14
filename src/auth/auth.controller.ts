@@ -48,7 +48,7 @@ export class AuthController {
     return this.authService.register(req, file.originalname, file.buffer);
   }
 
-  @Get()
+  @Get('google')
   @UseGuards(AuthGuard('google'))
   googleLogin() {}
 

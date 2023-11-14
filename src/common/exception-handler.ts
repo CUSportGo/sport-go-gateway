@@ -1,6 +1,7 @@
 import { status } from '@grpc/grpc-js';
 import {
   BadRequestException,
+  ConflictException,
   ForbiddenException,
   HttpStatus,
   InternalServerErrorException,
@@ -36,7 +37,7 @@ const getExceptionFromGrpc = (error: any) => {
   const message = error.message;
   switch (statusCode) {
     case status.ALREADY_EXISTS: {
-      throw new BadRequestException(message);
+      throw new ConflictException(message);
     }
     case status.INVALID_ARGUMENT: {
       throw new BadRequestException(message);
